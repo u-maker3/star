@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fff7ef">
+<title>あんた、何屋で売ってくん。｜星から読む 自分株式会社の商売会議</title>
+<style>
+:root{--ink:#332923;--sub:#74665d;--paper:#fffaf4;--card:#fff;--pink:#ff6f91;--gold:#e6a93d;--line:#eadfd4;--shadow:0 12px 34px rgba(80,53,34,.12)}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;color:var(--ink);background:radial-gradient(circle at 10% 0,#ffe7ee,transparent 30%),radial-gradient(circle at 90% 10%,#fff0c7,transparent 28%),#fff8ef}
+main{width:min(720px,100%);margin:auto;padding:18px 14px 80px}.hero,.card{background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow)}
+.hero{padding:18px;text-align:center}.hero img{width:min(100%,430px);max-height:350px;object-fit:contain}.eyebrow{font-weight:800;color:#a4692b;letter-spacing:.08em}.hero h1{font-size:clamp(29px,8vw,48px);line-height:1.04;margin:6px 0}.hero p{margin:8px 0;color:var(--sub);line-height:1.7}
+.notice{font-size:12px;background:#fff5d9;border-radius:14px;padding:10px 12px;margin-top:12px;text-align:left;line-height:1.55}
+.card{padding:18px;margin-top:14px}.card h2{margin:0 0 8px;font-size:22px}.small{font-size:12px;color:var(--sub);line-height:1.6}
+label{display:block;font-weight:800;margin:15px 0 6px}.optional{font-size:11px;color:var(--sub);font-weight:500}
+input,select{width:100%;font-size:16px;padding:13px 12px;border:1px solid #d9cabe;border-radius:14px;background:#fff;color:var(--ink)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.planet{border:1px solid var(--line);border-radius:20px;padding:12px;background:#fffdf9}.planet img{display:block;width:100%;height:150px;object-fit:contain}.planet h3{margin:6px 0 2px}.planet p{margin:0 0 8px;font-size:12px;color:var(--sub)}
+button{border:0;border-radius:999px;padding:15px 18px;font-size:16px;font-weight:900;cursor:pointer}.primary{width:100%;margin-top:18px;background:linear-gradient(135deg,#ff6f91,#ef9c47);color:white;box-shadow:0 8px 22px rgba(239,111,145,.3)}.secondary{background:#fff;border:1px solid var(--line);color:var(--ink)}
+#result{display:none}.resultHero{text-align:center}.resultHero img{width:min(90%,330px);max-height:270px;object-fit:contain}.type{font-size:28px;font-weight:1000;line-height:1.15;margin:5px 0 8px}.pill{display:inline-block;padding:7px 11px;border-radius:999px;background:#fff0d5;color:#8c5b18;font-weight:800;font-size:12px}
+.dept{display:grid;grid-template-columns:88px 1fr;gap:12px;align-items:start;border-top:1px dashed var(--line);padding:14px 0}.dept:first-of-type{border-top:0}.dept img{width:88px;height:88px;object-fit:contain}.dept h3{margin:0 0 4px;font-size:17px}.dept p{margin:0;line-height:1.65;font-size:14px}.quote{background:#fff4f7;border-left:5px solid var(--pink);padding:14px;border-radius:14px;line-height:1.65;margin:12px 0}.order{background:#332923;color:#fff;padding:16px;border-radius:18px;font-weight:900;line-height:1.6}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.actions button{flex:1;min-width:130px}
+.footer{text-align:center;font-size:11px;color:#8c7d72;margin-top:18px;line-height:1.6}
+@media(max-width:520px){.grid{grid-template-columns:1fr}.planet{display:grid;grid-template-columns:95px 1fr;column-gap:10px}.planet img{grid-row:1/4;width:95px;height:110px}.planet h3{margin-top:12px}.dept{grid-template-columns:72px 1fr}.dept img{width:72px;height:72px}}
+</style>
+</head>
+<body>
+<main>
+<section class="hero">
+<img src="./TOP.PNG" alt="自分株式会社の商売会議">
+<div class="eyebrow">星から読む、自分株式会社の商売会議</div>
+<h1>あんた、<br>何屋で売ってくん。</h1>
+<p>7つの部署に星を配置して、<br>あんたの商売の見せ方・伝え方・動き方を会議します。</p>
+<div class="notice">このアプリは占星術の象徴を使った娯楽・自己分析コンテンツです。売上・成功・適職などを保証・予測するものではありません。入力内容は外部送信・保存しません。</div>
+</section>
+
+<section class="card" id="formCard">
+<h2>🏢 自分株式会社を設立</h2>
+<p class="small">自分の出生図で「どの天体が何座か」を確認して選んでな。出生時刻が分からずMCが不明なら「わからん」でOK。</p>
+<label>社長名 <span class="optional">（ニックネームでOK／空欄可）</span></label>
+<input id="name" maxlength="20" placeholder="例：うめこ">
+
+<div class="grid" id="selectors"></div>
+<button class="primary" id="diagnose">商売会議を始める 🐾</button>
+</section>
+
+<section id="result">
+<div class="card resultHero">
+<img src="./RESULT.PNG" alt="決裁">
+<div class="pill" id="mode"></div>
+<div class="type" id="type"></div>
+<p id="summary"></p>
+</div>
+<div class="card">
+<h2>📋 各部署から報告</h2>
+<div id="departments"></div>
+</div>
+<div class="card">
+<h2>🗣️ 本日の社内会議</h2>
+<div class="quote" id="meeting"></div>
+<h2>🚫 やらんでええこと</h2>
+<p id="dont"></p>
+<h2>📌 本日の営業命令</h2>
+<div class="order" id="order"></div>
+<h2>🐱 うめこ一言</h2>
+<p id="umeko"></p>
+</div>
+<div class="card">
+<h2>🪪 商売・営業許可証</h2>
+<img src="./LICENSE.PNG" alt="営業許可証" style="width:100%;max-height:260px;object-fit:contain">
+<p class="small">診断結果を画像にして保存できます。画像生成は端末内のCanvasだけで行います。</p>
+<div class="actions">
+<button class="primary" id="save" style="margin-top:0">営業許可証を画像保存</button>
+<button class="secondary" id="retry">もう一回会議する</button>
+</div>
+</div>
+</section>
+<div class="footer">© UMEKO / Original app text & design concept.<br>API・外部ライブラリ・外部通信なし。</div>
+</main>
+<script>
+"use strict";
+const signs=["牡羊座","牡牛座","双子座","蟹座","獅子座","乙女座","天秤座","蠍座","射手座","山羊座","水瓶座","魚座"];
+const core={
+"牡羊座":{k:"先陣",v:"新しいことを先に始める",tone:"結論から速く",look:"主役をひとつドン",act:"まず動いて直す",grow:"新企画から広げる",social:"先陣を切る人"},
+"牡牛座":{k:"品質",v:"手触りのある価値をじっくり育てる",tone:"具体的に、体感で",look:"質感と心地よさ",act:"決めたことを粘り強く",grow:"既存の価値を厚くする",social:"ちゃんとしている人"},
+"双子座":{k:"情報",v:"知ったことを軽やかにつなぐ",tone:"短く、分かりやすく、数多く",look:"軽快で変化のある見せ方",act:"試して会話して切り替える",grow:"媒体や入口を複数持つ",social:"情報が集まる人"},
+"蟹座":{k:"安心",v:"人が戻ってこられる居場所を育てる",tone:"身近な言葉で気持ちに寄り添う",look:"親しみと温度",act:"大事な人を守るために動く",grow:"常連と口コミを育てる",social:"面倒見のいい人"},
+"獅子座":{k:"表現",v:"自分らしい表現を堂々と見せる",tone:"自信を持って物語る",look:"華やかに主役を作る",act:"舞台に立って引っ張る",grow:"作品・ブランドを大きく見せる",social:"あの人と言えば、がある人"},
+"乙女座":{k:"改善",v:"役に立つ形へ整えて届ける",tone:"順序立てて具体的に",look:"清潔・整理・機能美",act:"小さく検証して改善する",grow:"仕組みと品質管理で広げる",social:"細部まで任せられる人"},
+"天秤座":{k:"調和",v:"人と人、価値と価値を美しくつなぐ",tone:"相手目線でスマートに",look:"洗練とバランス",act:"比較し、良い落とし所を作る",grow:"コラボと紹介で広げる",social:"センスよく橋渡しする人"},
+"蠍座":{k:"深掘り",v:"表面で終わらず核心まで扱う",tone:"少数に深く刺す",look:"濃さと秘密めいた余白",act:"決めた対象へ集中する",grow:"専門性と濃い信頼を深める",social:"その道を深く知る人"},
+"射手座":{k:"探究",v:"学びと経験を遠くまで運ぶ",tone:"大きな視点で面白く",look:"自由さと旅する空気",act:"外へ出て試す",grow:"学び・発信・遠方へ広げる",social:"世界を広げてくれる人"},
+"山羊座":{k:"実績",v:"積み上げを形と信用に変える",tone:"根拠と結果を端的に",look:"信頼感と骨格",act:"計画して続ける",grow:"仕組み化し長期で育てる",social:"任せても崩れない人"},
+"水瓶座":{k:"独自",v:"当たり前を外して新しい仕組みを作る",tone:"独自の視点をフラットに",look:"未来感と意外性",act:"古い前提を疑って試す",grow:"ネットワークと技術で広げる",social:"他と違う発想の人"},
+"魚座":{k:"感性",v:"言葉にならない気持ちを形にする",tone:"イメージと共感で伝える",look:"やわらかい世界観と物語",act:"流れを感じて柔軟に動く",grow:"共感・創作・癒やしを広げる",social:"感覚をすくい上げる人"}
+};
+const depts=[
+{id:"sun",label:"☀️ 太陽／看板商品部",img:"SUN.PNG",field:"v",lead:"看板の核"},
+{id:"moon",label:"🌙 月／また来たなる部",img:"MOON.PNG",field:"v",lead:"安心の理由"},
+{id:"mercury",label:"☿ 水星／売り文句部",img:"MERCURY.PNG",field:"tone",lead:"伝え方"},
+{id:"venus",label:"♀ 金星／店構え部",img:"VENUS.PNG",field:"look",lead:"魅せ方"},
+{id:"mars",label:"♂ 火星／営業部",img:"MARS.PNG",field:"act",lead:"動き方"},
+{id:"jupiter",label:"♃ 木星／事業拡張部",img:"JUPITER.PNG",field:"grow",lead:"育て方"},
+{id:"mc",label:"MC／世間の看板部",img:"MC.PNG",field:"social",lead:"外からの看板",optional:true}
+];
+const selectors=document.getElementById("selectors");
+depts.forEach(d=>{
+ const box=document.createElement("div"); box.className="planet";
+ box.innerHTML=`<img src="./${d.img}" alt=""><div><h3>${d.label}</h3><p>${d.lead}</p><select id="${d.id}"><option value="">${d.optional?"わからん／出生時刻不明":"選んでな"}</option>${signs.map(s=>`<option>${s}</option>`).join("")}</select></div>`;
+ selectors.appendChild(box);
+});
+function getValues(){
+ const out={}; for(const d of depts) out[d.id]=document.getElementById(d.id).value; return out;
+}
+function validate(v){return depts.filter(d=>!d.optional).every(d=>v[d.id]);}
+function departmentText(d,s){
+ const c=core[s];
+ const prefixes={sun:"あんたが前に出す核は",moon:"お客さんが『また来よ』と思う鍵は",mercury:"伝える時の武器は",venus:"世界観づくりの鍵は",mars:"動く時の勝ち筋は",jupiter:"事業を育てるなら",mc:"世間から見えやすい看板は"};
+ return `${prefixes[d.id]}「${c[d.field]}」。${s}らしい「${c.k}」を、無理に薄めんでええ。`;
+}
+function buildType(v){
+ const a=core[v.sun].k, b=core[v.mercury].k, c=core[v.mars].k;
+ return `「${a}を看板に、${b}で伝えて、${c}で動く商店主」`;
+}
+function buildMeeting(v){
+ let lines=[
+ `看板商品部「${core[v.sun].v}。これを前に出そ。」`,
+ `また来たなる部「うちは『${core[v.moon].v}』が安心材料やで。」`,
+ `売り文句部「説明は『${core[v.mercury].tone}』でいこ。」`,
+ `店構え部「見た目は『${core[v.venus].look}』。そこ雑にせんといて。」`,
+ `営業部「${core[v.mars].act}。会議だけで一日終わらすな🤣」`,
+ `事業拡張部「次に育てるなら『${core[v.jupiter].grow}』や。」`
+ ];
+ if(v.mc) lines.push(`世間の看板部「外からは『${core[v.mc].social}』として見せてこ。」`);
+ return lines.join("<br>");
+}
+function dontText(v){
+ const map={
+ "牡羊座":"完璧になるまで隠し続けること。",
+ "牡牛座":"安さだけで勝負して、自分の品質まで値切ること。",
+ "双子座":"ひとつの説明を完璧にするまで発信を止めること。",
+ "蟹座":"全員の面倒を抱えて、自分の店まで閉めること。",
+ "獅子座":"目立たんように全部を無難にすること。",
+ "乙女座":"直す場所を探し続けて、完成を永遠に延期すること。",
+ "天秤座":"全員に合わせすぎて、自分の看板を消すこと。",
+ "蠍座":"濃さを怖がって、誰にでも当たる薄味にすること。",
+ "射手座":"自由を求めすぎて、昨日始めた店を今日たたむこと🤣",
+ "山羊座":"実績が揃うまで『まだ名乗れません』を続けること。",
+ "水瓶座":"違うこと自体を目的にして、お客さんを置いていくこと。",
+ "魚座":"雰囲気だけで全部伝わると思って、申込方法まで溶かすこと。"
+ };
+ return map[v.sun];
+}
+function orderText(v){
+ const orders={
+ "牡羊座":"今日ひとつ、60点のまま表に出せ。",
+ "牡牛座":"いちばん自信ある商品を1個選んで、価値を3行で書け。",
+ "双子座":"今日知ったことを、短文ひとつで発信せぇ。",
+ "蟹座":"『誰に戻ってきてほしい店か』を1人だけ思い浮かべて書け。",
+ "獅子座":"いちばん見てほしいものを、遠慮せず主役に置け。",
+ "乙女座":"申込までの導線を1か所だけ直せ。全部直すな。",
+ "天秤座":"プロフィールかメニューの見た目を1か所整えろ。",
+ "蠍座":"『ここだけは誰より深く語れる』テーマを1個決めろ。",
+ "射手座":"今いちばん学びたい・試したいことを1個、予定に入れろ。",
+ "山羊座":"続けたい仕事を1個選んで、次の3回分だけ予定を決めろ。",
+ "水瓶座":"『普通こうする』を1個だけ疑って、自分式を試せ。",
+ "魚座":"頭の中のイメージを、写真・言葉・絵のどれか1つにせぇ。"
+ };
+ return orders[v.mars];
+}
+function diagnose(){
+ const v=getValues();
+ if(!validate(v)){alert("太陽〜木星までは全部選んでな🤣");return;}
+ const name=(document.getElementById("name").value.trim()||"社長");
+ document.getElementById("mode").textContent=v.mc?"7部署・完全会議":"6部署・MCなし会議";
+ document.getElementById("type").textContent=name+"株式会社："+buildType(v);
+ document.getElementById("summary").textContent=`看板は${core[v.sun].k}、伝え方は${core[v.mercury].k}、動き方は${core[v.mars].k}。星の部署ごとに役割を分けると、全部を同じテンションでやらんでええ。`;
+ const wrap=document.getElementById("departments");wrap.innerHTML="";
+ depts.forEach(d=>{if(!v[d.id])return;const el=document.createElement("div");el.className="dept";el.innerHTML=`<img src="./${d.img}" alt=""><div><h3>${d.label}｜${v[d.id]}</h3><p>${departmentText(d,v[d.id])}</p></div>`;wrap.appendChild(el);});
+ document.getElementById("meeting").innerHTML=buildMeeting(v);
+ document.getElementById("dont").textContent=dontText(v);
+ document.getElementById("order").textContent=orderText(v);
+ document.getElementById("umeko").textContent=v.mc?"会議7人おんのに社長あんた一人や。はよ決裁せぇ🤣":"MC分からんでも会社は営業できる。分かる部署から働かせよ🤣";
+ document.getElementById("formCard").style.display="none";document.getElementById("result").style.display="block";window.scrollTo({top:0,behavior:"smooth"});
+ window.__last={v,name,type:buildType(v)};
+}
+document.getElementById("diagnose").addEventListener("click",diagnose);
+document.getElementById("retry").addEventListener("click",()=>{document.getElementById("result").style.display="none";document.getElementById("formCard").style.display="block";window.scrollTo({top:0,behavior:"smooth"});});
+document.getElementById("save").addEventListener("click",async()=>{
+ if(!window.__last)return;
+ const {v,name,type}=window.__last, W=1080,H=1350,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");
+ x.fillStyle="#fff8ef";x.fillRect(0,0,W,H);
+ x.fillStyle="#332923";x.textAlign="center";x.font="900 54px sans-serif";x.fillText("商売・営業許可証",W/2,90);
+ x.font="700 28px sans-serif";x.fillStyle="#9b6b38";x.fillText("星から読む 自分株式会社の商売会議",W/2,140);
+ try{const im=new Image();im.src="./LICENSE.PNG";await im.decode();x.drawImage(im,315,175,450,390)}catch(e){}
+ x.fillStyle="#332923";x.font="900 42px sans-serif";x.fillText(name+"株式会社",W/2,610);
+ x.font="800 31px sans-serif";wrapCanvas(x,type,90,680,900,44);
+ x.textAlign="left";x.font="700 27px sans-serif";let y=790;
+ const rows=[["看板",v.sun],["安心",v.moon],["言葉",v.mercury],["魅せ方",v.venus],["営業",v.mars],["拡張",v.jupiter]];if(v.mc)rows.push(["世間の看板",v.mc]);
+ rows.forEach(r=>{x.fillStyle="#9b6b38";x.fillText(r[0],120,y);x.fillStyle="#332923";x.fillText(r[1],340,y);y+=55});
+ x.fillStyle="#332923";x.font="900 29px sans-serif";x.textAlign="center";x.fillText("本日の営業命令",W/2,y+35);x.font="700 25px sans-serif";wrapCanvas(x,orderText(v),100,y+80,880,38);
+ x.font="600 18px sans-serif";x.fillStyle="#8b7a6e";x.fillText("※占星術の象徴を使った娯楽・自己分析コンテンツです",W/2,1310);
+ const a=document.createElement("a");a.download="UMEKO_BUSINESS_LICENSE.PNG";a.href=c.toDataURL("image/png");a.click();
+});
+function wrapCanvas(ctx,text,x,y,maxWidth,lineHeight){
+ const chars=[...text];let line="";for(const ch of chars){const t=line+ch;if(ctx.measureText(t).width>maxWidth&&line){ctx.fillText(line,540,y);line=ch;y+=lineHeight}else line=t}if(line)ctx.fillText(line,540,y);
+}
+</script>
+</body>
+</html>
