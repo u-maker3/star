@@ -19,7 +19,7 @@ main{width:min(720px,100%);margin:auto;padding:16px 14px 80px}.hero,.card{backgr
 <img src="./TOP.PNG" alt="自分株式会社の商売会議">
 <div class="eyebrow">星から読む、自分株式会社の商売会議</div>
 <h1>あんた、<br>何屋で売ってくん。</h1>
-<p>星座を自分で調べる作業、廃止しました🤣<br>生年月日から6天体を自動計算して会議します。</p>
+<p>星座を自分で調べる作業、廃止しました🤣<br>生年月日から6天体を自動計算。出生時刻＋出生地が分かればMCまで会議します。</p>
 <div class="notice">日本生まれ（JST）向け。出生時刻が不明でも、同じ日の中で星座が変わらない天体は自動判定します。時刻によって星座が変わる場合は、勝手に決めず診断を止めます。</div>
 </section>
 
@@ -34,9 +34,12 @@ main{width:min(720px,100%);margin:auto;padding:16px 14px 80px}.hero,.card{backgr
 
 <details class="advanced">
 <summary>MC（世間の看板部）も出したい人</summary>
-<p class="small">MCは出生時刻と出生地の「経度」が必要です。経度が分からない場合は空欄でOK。適当な場所から推定はしません。</p>
-<label>出生地の東経 <span class="optional">例：和歌山市付近なら約135.17°E。正確に使うなら出生地の経度を確認してください。</span></label>
-<input id="longitude" type="number" step="0.0001" min="-180" max="180" placeholder="例：135.1700">
+<p class="small">MCは出生時刻と出生地が分かる人だけ。都道府県→市区町村を選ぶだけでOK。分からない場合は空欄で6部署版にします。</p>
+<label>出生地の都道府県</label>
+<select id="pref"><option value="">選んでな</option></select>
+<label>出生地の市区町村</label>
+<select id="city" disabled><option value="">先に都道府県を選んでな</option></select>
+<p class="small">市区町村の代表座標を使います。出生地の細かな住所入力は不要です。</p>
 </details>
 
 <div class="error" id="error"></div>
@@ -66,10 +69,36 @@ main{width:min(720px,100%);margin:auto;padding:16px 14px 80px}.hero,.card{backgr
 </div>
 </section>
 <div class="footer">占星術の象徴を使った娯楽・自己分析コンテンツです。売上・成功・適職を保証するものではありません。<br>
-天体計算：Astronomy Engine 2.1.19 (MIT License, © 2019–2025 Don Cross)。ブラウザ内で計算します。</div>
+天体計算：Astronomy Engine 2.1.19 (MIT License, © 2019–2025 Don Cross)。<br>
+市区町村データ：code4fukui/localgovjp (CC0)。入力した生年月日・時刻・出生地を外部送信する処理はありません。</div>
 </main>
 <script>
+
 "use strict";
+let municipalities=[];
+(async function loadMunicipalities(){
+ try{
+  const r=await fetch("https://code4fukui.github.io/localgovjp/localgovjp.json",{cache:"force-cache"});
+  if(!r.ok) throw new Error("municipality data");
+  municipalities=await r.json();
+  const prefs=[...new Set(municipalities.map(x=>x.pref))];
+  const ps=document.getElementById("pref");
+  prefs.forEach(pref=>{const o=document.createElement("option");o.value=o.textContent=pref;ps.appendChild(o)});
+ }catch(e){
+  const er=document.getElementById("error");
+  er.innerHTML="出生地データを読み込めませんでした。MCなしの6部署診断はそのまま使えます。";
+  er.style.display="block";
+ }
+})();
+document.getElementById("pref").addEventListener("change",function(){
+ const cs=document.getElementById("city"); cs.innerHTML='<option value="">選んでな</option>';
+ municipalities.filter(x=>x.pref===this.value).forEach(x=>{
+  const o=document.createElement("option");o.value=x.city;o.textContent=x.city;
+  o.dataset.lat=x.lat;o.dataset.lng=x.lng;cs.appendChild(o);
+ });
+ cs.disabled=!this.value;
+});
+
 const signs=["牡羊座","牡牛座","双子座","蟹座","獅子座","乙女座","天秤座","蠍座","射手座","山羊座","水瓶座","魚座"];
 const core={
 "牡羊座":{k:"先陣",v:"新しいことを先に始める",tone:"結論から速く",look:"主役をひとつドン",act:"まず動いて直す",grow:"新企画から広げる",social:"先陣を切る人"},
@@ -113,17 +142,19 @@ function jstDate(dateStr,timeStr){
  const [hh,mm]=(timeStr||"12:00").split(":").map(Number);
  return new Date(Date.UTC(y,m-1,d,hh-9,mm,0));
 }
-function calcMC(date,longitude){
- // MC: local apparent sidereal time + true obliquity of date.
- // Uses Astronomy Engine SiderealTime and Rotation_EQD_ECT to derive obliquity.
- const lst=norm(Astronomy.SiderealTime(date)*15 + longitude);
- // Get true ecliptic/equator rotation and derive obliquity from matrix.
- const rot=Astronomy.Rotation_EQD_ECT(date).rot;
- // For a pure x-axis obliquity rotation, sin/cos are represented in yz terms.
- const eps=Math.atan2(Math.abs(rot[1][2]), Math.abs(rot[1][1]));
- const th=lst*Math.PI/180;
- let mc=Math.atan2(Math.sin(th)*Math.cos(eps),Math.cos(th))*180/Math.PI;
- return norm(mc);
+function calcMC(date,latitude,longitude){
+ const observer=new Astronomy.Observer(latitude,longitude,0);
+ const t=new Astronomy.AstroTime(date);
+ const zenith=new Astronomy.Vector(0,0,1,t);
+ const rotation=Astronomy.Rotation_HOR_EQJ(date,observer);
+ const eqj=Astronomy.RotateVector(rotation,zenith);
+ return norm(Astronomy.Ecliptic(eqj).elon);
+}
+function degMinWithinSign(lon){
+ let d=norm(lon)%30, deg=Math.floor(d), min=Math.round((d-deg)*60);
+ if(min===60){deg+=1;min=0}
+ if(deg===30){deg=0}
+ return `${deg}°${String(min).padStart(2,"0")}′`;
 }
 function showError(msg){const e=document.getElementById("error");e.innerHTML=msg;e.style.display="block"}
 function clearError(){document.getElementById("error").style.display="none"}
@@ -145,11 +176,15 @@ function calculateChart(){
    }
  }
  const v={};for(const k of Object.keys(raw))v[k]=signOf(raw[k].lon);
- const lng=document.getElementById("longitude").value;
- if(exact && lng!==""){
-   const L=Number(lng);
-   if(Number.isFinite(L)&&L>=-180&&L<=180){const mlon=calcMC(date,L);v.mc=signOf(mlon);raw.mc={lon:mlon}}
- } else v.mc="";
+ const citySel=document.getElementById("city");
+ const opt=citySel.options[citySel.selectedIndex];
+ v.mc="";
+ if(exact && opt && opt.value && opt.dataset.lat && opt.dataset.lng){
+   const lat=Number(opt.dataset.lat), lng=Number(opt.dataset.lng);
+   if(Number.isFinite(lat)&&Number.isFinite(lng)){
+     const mlon=calcMC(date,lat,lng);v.mc=signOf(mlon);raw.mc={lon:mlon};
+   }
+ }
  return {v,raw,date,exact};
 }
 function departmentText(d,s){
@@ -170,7 +205,7 @@ function diagnose(){
  document.getElementById("summary").textContent=`看板は${core[v.sun].k}、伝え方は${core[v.mercury].k}、動き方は${core[v.mars].k}。星の部署ごとに役割を分けて会議したで。`;
  const ag=document.getElementById("astrogrid");ag.innerHTML="";
  const names={sun:"太陽",moon:"月",mercury:"水星",venus:"金星",mars:"火星",jupiter:"木星",mc:"MC"};
- for(const k of ["sun","moon","mercury","venus","mars","jupiter","mc"]){if(!v[k])continue;const z=document.createElement("div");z.className="astro";z.textContent=`${glyph[k]} ${names[k]}　${v[k]}（${(raw[k].lon%30).toFixed(1)}°）`;ag.appendChild(z)}
+ for(const k of ["sun","moon","mercury","venus","mars","jupiter","mc"]){if(!v[k])continue;const z=document.createElement("div");z.className="astro";z.textContent=`${glyph[k]} ${names[k]}　${v[k]} ${degMinWithinSign(raw[k].lon)}`;ag.appendChild(z)}
  const wrap=document.getElementById("departments");wrap.innerHTML="";
  depts.forEach(d=>{if(!v[d.id])return;const el=document.createElement("div");el.className="dept";el.innerHTML=`<img src="./${d.img}" alt=""><div><h3>${d.label}｜${v[d.id]}</h3><p>${departmentText(d,v[d.id])}</p></div>`;wrap.appendChild(el)});
  document.getElementById("meeting").innerHTML=buildMeeting(v);document.getElementById("dont").textContent=dontMap[v.sun];document.getElementById("order").textContent=orderMap[v.mars];
