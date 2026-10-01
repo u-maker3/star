@@ -78,11 +78,13 @@ main{width:min(720px,100%);margin:auto;padding:16px 14px 80px}.hero,.card{backgr
 <h3>⚠️ 商売で詰まりやすいところ</h3><p id="reportRisk"></p>
 <h3>🧭 これからの商売方針</h3><p id="reportPolicy"></p>
 <div class="order"><b>最終決裁</b><br><span id="finalDecision"></span></div>
+<p class="small">↓ 鑑定書画像は長押し →「写真に保存」でOK。</p>
+<img id="reportPreview" class="licensePreview" alt="自分株式会社・商売鑑定書">
 </div>
 <div class="card">
 <h2>🪪 商売・営業許可証</h2>
 <img src="./LICENSE.PNG" alt="営業許可証" style="width:100%;max-height:260px;object-fit:contain">
-<p class="small">下の営業許可証を長押し →「写真に保存」でOK。</p><img id="licensePreview" class="licensePreview" alt="商売・営業許可証"><div class="actions"><button class="secondary" id="printReport">鑑定書をPDFで開く</button><button class="secondary" id="retry">もう一回会議する</button></div>
+<p class="small">下の営業許可証を長押し →「写真に保存」でOK。</p><img id="licensePreview" class="licensePreview" alt="商売・営業許可証"><div class="actions"><button class="secondary" id="printReport">鑑定書画像を作る</button><button class="secondary" id="retry">もう一回会議する</button></div>
 </div>
 </section>
 <div class="footer">占星術の象徴を使った娯楽・自己分析コンテンツです。売上・成功・適職を保証するものではありません。<br>
@@ -296,17 +298,17 @@ const orderMap={"牡羊座":"今日ひとつ、60点のまま表に出せ。","�
 function fillLongReport(v,name){
  const A=core[v.sun],B=core[v.moon],C=core[v.mercury],D=core[v.venus],E=core[v.mars],F=core[v.jupiter];
  const put=(id,t)=>document.getElementById(id).textContent=t;
- put("overall",`${name}株式会社は、「${A.k}」を商売の芯に、「${C.k}」で伝え、「${E.k}」で現実を動かす会社。全部を同じテンションで頑張るより、看板・接客・言葉・見せ方・営業・拡張を別部署として考えるほど持ち味が生きる。`);
- put("reportCore",`前に出したい価値は「${A.v}」。商品数を増やすより、何を大切にして仕事する人なのかが伝わるほど看板が強くなる。${richSign[v.sun].strength}を商品やサービスの中心へ置くのが土台。`);
- put("reportCustomer",`お客さんが戻ってくる鍵は「${B.v}」と感じられること。技術や価格だけでなく、やり取りの温度や店の空気まで商品になる。${richSign[v.moon].strength}を接客に使いつつ、${richSign[v.moon].caution}状態にならない線引きも必要。`);
- put("reportMessage",`伝える時は「${C.tone}」が基本。情報量を増やすより、「この人の説明は分かる」と思われる言葉を育てる。投稿・プロフィール・メニュー説明・対面トークを同じ言葉遣いでつなぐと、商売の印象がまとまりやすい。`);
- put("reportBrand",`見せ方は「${D.look}」が軸。写真、余白、文字、パッケージ、接客まで同じ空気にそろえると世界観になる。${richSign[v.venus].strength}が視覚に出るほど「あの人っぽい」が育つ。`);
- put("reportAction",`営業では「${E.act}」が自然に動きやすい型。苦手な営業方法を根性で続けるより、自分のテンポへ募集・告知・新企画を合わせる。注意したいのは${richSign[v.mars].caution}こと。`);
- put("reportGrowth",`育てる方向は「${F.grow}」。何でも増やすのではなく、すでに反応があるもの、続けても苦しくないもの、もっと深めたいものを選んで拡張する。「何屋として広げるか」を確認してから増築する。`);
- put("reportPublic",v.mc?`社会へ掲げる看板は「${core[v.mc].social}」。初対面でも何を頼める人か分かる肩書きや一文を用意し、実際の仕事と外からの見え方をつなぐ。${richSign[v.mc].strength}を社会向けの役割として見せると伝わりやすい。`:`出生時刻・出生地が揃っていないため、ここは推測していません。分からないものを無理に埋めず、今回は6部署から読める商売の軸を優先します。`);
- put("reportRisk",`注意したいのは「${richSign[v.sun].caution}」ことと、営業面で「${richSign[v.mars].caution}」状態になること。魅力がない時より、持ち味を使いすぎたり、逆に隠しすぎたりした時に詰まりやすい。`);
- put("reportPolicy",`まず「${A.v}」を看板として明確にし、発信は「${C.tone}」、行動は「${E.act}」で統一する。そのうえで「${F.grow}」を半年単位で育てる。新しいことを足す前に、今ある仕事がこの方針につながっているか確認する。`);
- put("finalDecision",`${orderMap[v.mars]}　全部いっぺんに直さんでええ。今日ひとつ決裁して、商売を一ミリ動かすこと。`);
+ put("overall",`${name}株式会社は、「${A.k}」を商売の芯に、「${C.k}」で伝え、「${E.k}」で現実を動かす会社。全部ひとりで同じテンションで頑張ろ思たら、そら社長倒れる🤣 看板・接客・言葉・見せ方・営業・拡張、部署ごとに働かせた方があんたの商売は回りやすい。`);
+ put("reportCore",`前に出したい価値は「${A.v}」。メニュー増やしたら売れる、ちゃうで🤣 「この人、何を大事にして仕事してんの？」が伝わった時に看板は強なる。${richSign[v.sun].strength}を商品やサービスの中心へ置くのが土台。`);
+ put("reportCustomer",`お客さんが戻ってくる鍵は「${B.v}」と感じられること。技術と値段だけ見てへんで。しゃべった時の感じ、帰る時の気分、「また来よかな」まで全部商品や。${richSign[v.moon].strength}を接客に使いつつ、${richSign[v.moon].caution}状態にならない線引きも必要。`);
+ put("reportMessage",`伝える時は「${C.tone}」が基本。説明ぎゅうぎゅうに詰めたら親切、とは限らん🤣 「この人の話、分かるわ」が勝ち。投稿・プロフィール・メニュー説明・対面トークを同じ言葉遣いでつなぐと、商売の印象がまとまりやすい。`);
+ put("reportBrand",`見せ方は「${D.look}」が軸。写真だけオシャレにしても店は完成せん🤣 文字も余白もパッケージも接客も、同じ空気になったら「あ、あんたの店や」になる。${richSign[v.venus].strength}が視覚に出るほど「あの人っぽい」が育つ。`);
+ put("reportAction",`営業では「${E.act}」が自然に動きやすい型。嫌いな営業を根性で続けて毎回しんどなるん、もうええ🤣 自分が動けるテンポに募集も告知も合わせたらええ。注意したいのは${richSign[v.mars].caution}こと。`);
+ put("reportGrowth",`育てる方向は「${F.grow}」。何でもかんでも増築したら、最終的に何屋か分からん建物できるで🤣 反応ある・続けられる・もっと育てたい。このへんから増やそ。「何屋として広げるか」を確認してから増築する。`);
+ put("reportPublic",v.mc?`社会へ掲げる看板は「${core[v.mc].social}」。初対面で「で、何してる人なん？」になったら看板迷子🤣 一言で何を頼める人か伝わるようにしとこ。${richSign[v.mc].strength}を社会向けの役割として見せると伝わりやすい。`:`出生時刻・出生地が揃っていないため、ここは推測していません。分からんもんを、たぶんコレやろで埋めるんはナシ🤣 今回は分かる6部署だけで、ちゃんと会議しとく。`);
+ put("reportRisk",`注意したいのは「${richSign[v.sun].caution}」ことと、営業面で「${richSign[v.mars].caution}」状態になること。あんたに魅力がないんちゃう。持ち味を働かせすぎるか、逆に休ませすぎた時に「なんで回らんねん」が起きやすい。`);
+ put("reportPolicy",`まず「${A.v}」を看板として明確にし、発信は「${C.tone}」、行動は「${E.act}」で統一する。そのうえで「${F.grow}」を半年単位で育てる。新しいもん足す前に「それ、うちの会社に要るん？」って一回会議して🤣 足すんはその後や。`);
+ put("finalDecision",`${orderMap[v.mars]}　全部いっぺんに直そうとすな🤣 今日ひとつ決裁。ほんで商売を1ミリ動かす。それで優勝。`);
 }
 async function buildLicensePreview(v,name,type){
  const W=1080,H=1350,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");
@@ -333,28 +335,43 @@ function diagnose(){
 }
 document.getElementById("diagnose").addEventListener("click",diagnose);
 document.getElementById("retry").addEventListener("click",()=>{document.getElementById("result").style.display="none";document.getElementById("formCard").style.display="block";window.scrollTo({top:0,behavior:"smooth"})});
-document.getElementById("printReport").addEventListener("click",()=>{
- const report=document.querySelector(".reportBook");
- if(!report)return;
- const w=window.open("","_blank");
- if(!w){alert("新しい画面を開けへんかった😭 Safariのポップアップ設定を確認してな。");return;}
- const css=`
-  *{box-sizing:border-box}
-  body{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;color:#332923;margin:0;background:#fff}
-  .sheet{max-width:794px;margin:auto;padding:42px 50px}
-  h1{font-size:28px;margin:0 0 20px;border-bottom:3px solid #332923;padding-bottom:12px}
-  h2{font-size:20px;margin:26px 0 7px}
-  h3{font-size:17px;margin:22px 0 6px;page-break-after:avoid}
-  p{font-size:14px;line-height:1.9;margin:0 0 14px}
-  .quote{background:#fff4f7;border-left:5px solid #ff6f91;padding:14px;border-radius:12px;line-height:1.8}
-  .order{background:#332923;color:#fff;padding:16px;border-radius:14px;line-height:1.8;margin-top:24px}
-  .printnote{text-align:center;color:#786a60;font-size:12px;margin:30px 0 0}
-  @media print{.printnote{display:none}.sheet{padding:12mm 15mm}}
- `;
- w.document.open();
- w.document.write(`<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>自分株式会社・商売鑑定書</title><style>${css}</style></head><body><div class="sheet">${report.innerHTML}<p class="printnote">Safariの共有ボタン →「プリント」または「ファイルに保存」で鑑定書として残せます。</p></div></body></html>`);
- w.document.close();
- setTimeout(()=>{try{w.focus();w.print()}catch(e){}},500);
-});
+document.getElementById("printReport").addEventListener("click",()=>buildReportImage());
+async function buildReportImage(){
+ const q=window.__last;if(!q)return;
+ const {v,name}=q;
+ const sections=[
+ ["総合所見",document.getElementById("overall").textContent],
+ ["商売の核",document.getElementById("reportCore").textContent],
+ ["お客さんとの関係",document.getElementById("reportCustomer").textContent],
+ ["伝え方・発信",document.getElementById("reportMessage").textContent],
+ ["世界観・見せ方",document.getElementById("reportBrand").textContent],
+ ["行動・営業",document.getElementById("reportAction").textContent],
+ ["育てる方向",document.getElementById("reportGrowth").textContent],
+ ["社会に掲げる看板",document.getElementById("reportPublic").textContent],
+ ["商売で詰まりやすいところ",document.getElementById("reportRisk").textContent],
+ ["これからの商売方針",document.getElementById("reportPolicy").textContent],
+ ["最終決裁",document.getElementById("finalDecision").textContent]
+ ];
+ const W=1240, pad=90, lineH=42, titleH=150;
+ const tmp=document.createElement("canvas").getContext("2d");tmp.font="26px sans-serif";
+ function lines(text,max=1060){let out=[],line="";for(const ch of [...text]){let t=line+ch;if(tmp.measureText(t).width>max&&line){out.push(line);line=ch}else line=t}if(line)out.push(line);return out}
+ let H=titleH+80;
+ sections.forEach(([h,t])=>H+=65+lines(t).length*lineH+35);
+ H+=90;
+ const c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");
+ x.fillStyle="#fffaf4";x.fillRect(0,0,W,H);
+ x.fillStyle="#332923";x.textAlign="center";x.font="900 48px sans-serif";x.fillText("自分株式会社・商売鑑定書",W/2,75);
+ x.font="800 30px sans-serif";x.fillText(name+"株式会社",W/2,125);
+ let y=205;x.textAlign="left";
+ sections.forEach(([h,t],i)=>{
+   x.fillStyle=i===sections.length-1?"#332923":"#9b5f2f";x.font="900 30px sans-serif";x.fillText("【"+h+"】",pad,y);y+=52;
+   x.fillStyle="#332923";x.font="26px sans-serif";
+   for(const line of lines(t)){x.fillText(line,pad,y);y+=lineH}
+   y+=35;
+ });
+ x.textAlign="center";x.fillStyle="#8b7a6e";x.font="20px sans-serif";x.fillText("星から読む 自分株式会社の商売会議",W/2,H-40);
+ document.getElementById("reportPreview").src=c.toDataURL("image/png");
+ document.getElementById("reportPreview").scrollIntoView({behavior:"smooth",block:"center"});
+}
 function wrapCanvas(ctx,text,x,y,maxWidth,lineHeight){let line="";for(const ch of [...text]){const t=line+ch;if(ctx.measureText(t).width>maxWidth&&line){ctx.fillText(line,540,y);line=ch;y+=lineHeight}else line=t}if(line)ctx.fillText(line,540,y)}
 </script></body></html>
