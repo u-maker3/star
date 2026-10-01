@@ -9,7 +9,7 @@
 :root{--ink:#332923;--sub:#75675e;--line:#eadfd4;--pink:#ff6f91;--gold:#e7a53d;--shadow:0 12px 34px rgba(80,53,34,.12)}
 *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;color:var(--ink);background:radial-gradient(circle at 10% 0,#ffe6ee,transparent 30%),radial-gradient(circle at 90% 8%,#fff0c7,transparent 28%),#fff8ef}
 main{width:min(720px,100%);margin:auto;padding:16px 14px 80px}.hero,.card{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow)}.hero{text-align:center;padding:18px}.hero img{width:min(100%,430px);max-height:350px;object-fit:contain}.eyebrow{font-weight:900;color:#a4692b}.hero h1{font-size:clamp(30px,8vw,48px);line-height:1.05;margin:6px 0}.hero p,.small{color:var(--sub);line-height:1.65}.small{font-size:12px}.card{padding:18px;margin-top:14px}.card h2{margin:0 0 10px}label{display:block;font-weight:900;margin:14px 0 6px}.optional{font-size:11px;font-weight:500;color:var(--sub)}input,select{width:100%;font-size:16px;padding:13px;border:1px solid #d9cabe;border-radius:14px;background:#fff}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.notice{font-size:12px;line-height:1.6;padding:11px 12px;border-radius:14px;background:#fff5d9;margin-top:12px}.advanced{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px}summary{font-weight:900;cursor:pointer}button{border:0;border-radius:999px;padding:15px 18px;font-size:16px;font-weight:900;cursor:pointer}.primary{width:100%;margin-top:18px;color:#fff;background:linear-gradient(135deg,#ff6f91,#ef9c47);box-shadow:0 8px 22px rgba(239,111,145,.28)}.secondary{background:#fff;border:1px solid var(--line);color:var(--ink)}
-#result{display:none}.resultHero{text-align:center}.resultHero img{width:min(90%,330px);max-height:270px;object-fit:contain}.pill{display:inline-block;background:#fff0d5;color:#8c5b18;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:900}.type{font-size:27px;font-weight:1000;line-height:1.18;margin:8px 0}.astrogrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}.astro{padding:10px;border-radius:14px;background:#fff8ef;font-size:13px;font-weight:800}.dept{display:grid;grid-template-columns:82px 1fr;gap:12px;border-top:1px dashed var(--line);padding:14px 0}.dept:first-of-type{border-top:0}.dept img{width:82px;height:82px;object-fit:contain}.dept h3{margin:0 0 4px;font-size:17px}.dept p{margin:0;line-height:1.65;font-size:14px}.quote{background:#fff4f7;border-left:5px solid var(--pink);padding:14px;border-radius:14px;line-height:1.7}.order{background:#332923;color:#fff;padding:16px;border-radius:18px;font-weight:900;line-height:1.6}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.actions button{flex:1;min-width:130px}.error{display:none;margin-top:12px;padding:12px;border-radius:14px;background:#fff0f0;color:#9a3030;font-weight:700;line-height:1.55}.footer{text-align:center;color:#8c7d72;font-size:11px;line-height:1.65;margin-top:18px}
+#result{display:none}.resultHero{text-align:center}.resultHero img{width:min(90%,330px);max-height:270px;object-fit:contain}.pill{display:inline-block;background:#fff0d5;color:#8c5b18;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:900}.type{font-size:27px;font-weight:1000;line-height:1.18;margin:8px 0}.astrogrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}.astro{padding:10px;border-radius:14px;background:#fff8ef;font-size:13px;font-weight:800}.dept{display:grid;grid-template-columns:82px 1fr;gap:12px;border-top:1px dashed var(--line);padding:14px 0}.dept:first-of-type{border-top:0}.dept img{width:82px;height:82px;object-fit:contain}.dept h3{margin:0 0 4px;font-size:17px}.dept p{margin:0 0 12px;line-height:1.72;font-size:14px}.dept p:last-child{margin-bottom:0}.dept b{color:#9b5f2f}.quote{background:#fff4f7;border-left:5px solid var(--pink);padding:14px;border-radius:14px;line-height:1.7}.order{background:#332923;color:#fff;padding:16px;border-radius:18px;font-weight:900;line-height:1.6}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.actions button{flex:1;min-width:130px}.error{display:none;margin-top:12px;padding:12px;border-radius:14px;background:#fff0f0;color:#9a3030;font-weight:700;line-height:1.55}.footer{text-align:center;color:#8c7d72;font-size:11px;line-height:1.65;margin-top:18px}
 @media(max-width:520px){.row{grid-template-columns:1fr}.dept{grid-template-columns:70px 1fr}.dept img{width:70px;height:70px}.astrogrid{grid-template-columns:1fr 1fr}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
@@ -195,6 +195,75 @@ function calculateChart(){
  }
  return {v,raw,date,exact};
 }
+
+const richSign={
+"牡羊座":{strength:"先に動いて空気を変える瞬発力",caution:"勢いだけで説明や仕上げを置いていく",action:"今日ひとつ、考え中のものを表に出す"},
+"牡牛座":{strength:"価値をじっくり育て、品質で信用を積む力",caution:"納得するまで動かず旬を逃す",action:"いちばん自信のあるものを一つ磨く"},
+"双子座":{strength:"情報を集め、軽やかな言葉で人につなぐ力",caution:"面白そうな方へ飛びすぎて看板が散らかる",action:"今日伝えたいことを一文にする"},
+"蟹座":{strength:"人の気持ちを拾い、戻ってきたくなる居場所を作る力",caution:"世話を焼きすぎて自分が店員兼お客さん兼警備員になる",action:"大事にしたいお客さんを一人思い浮かべる"},
+"獅子座":{strength:"自分らしさを堂々と見せ、場を明るくする表現力",caution:"遠慮して主役を降りると魅力まで消える",action:"今日いちばん見てほしいものを一番前へ出す"},
+"乙女座":{strength:"細部を整え、役に立つ形へ仕上げる改善力",caution:"直す場所を探し続けて永遠に開店できない",action:"導線を一か所だけ改善して終わる"},
+"天秤座":{strength:"人と価値を美しくつなぎ、選びやすく見せる調整力",caution:"全員に好かれようとして自分の看板が薄くなる",action:"『これがうちの看板』を一つ決める"},
+"蠍座":{strength:"ひとつを深く掘り、濃い信頼へ変える集中力",caution:"濃さを隠して無難な薄味になる",action:"誰より深く語れるテーマを一つ前へ出す"},
+"射手座":{strength:"学びと経験を外へ運び、世界を広げる展開力",caution:"次の面白いことへ走って昨日の店を忘れる",action:"次に試したいことを一つ予定へ入れる"},
+"山羊座":{strength:"積み上げを仕組みと実績に変える継続力",caution:"実績が揃うまで名乗らず準備室に住み着く",action:"続けたい仕事の次の三回を決める"},
+"水瓶座":{strength:"当たり前を疑い、自分式の仕組みを作る独創力",caution:"違うこと自体が目的になって客を置いていく",action:"普通こうする、を一つだけ外して試す"},
+"魚座":{strength:"言葉にならない感覚を世界観へ変える共感力",caution:"雰囲気で全部伝わると思って申込方法まで霞ませる",action:"頭の中のイメージを一つ形にする"}
+};
+const deptVoice={
+sun:{
+ role:"ここは『何を看板にして商売するか』を決める部署。商品名より先に、あんたが何を大事にして仕事する人なんかを見る。",
+ strength:s=>`看板にすると強いのは、${core[s].v}こと。${richSign[s].strength}が、そのまま店の芯になる。`,
+ caution:s=>`看板を作る時の注意は「${richSign[s].caution}」こと。売れる形に寄せすぎて、自分の芯まで消さんこと。`,
+ action:s=>richSign[s].action
+},
+moon:{
+ role:"ここは『なんでお客さんがまた来たくなるんか』を見る部署。技術や値段だけやなく、店に流れる安心感を担当する。",
+ strength:s=>`リピートの鍵は、${core[s].v}空気。${richSign[s].strength}が『ここやったら大丈夫』につながりやすい。`,
+ caution:s=>`居心地を作ろうとして「${richSign[s].caution}」状態にならんように。お客さんを大事にするのと、全部背負うのは別やで。`,
+ action:s=>`お客さんが帰る時に、どんな気分になってほしいか一言で決める。`
+},
+mercury:{
+ role:"ここは『どう言えば伝わるか』専門。投稿文、説明、接客トーク、メニュー名まで、商売の言葉を担当する。",
+ strength:s=>`言葉の武器は「${core[s].tone}」。${richSign[s].strength}を文章や会話に乗せると、あんたらしい説明になる。`,
+ caution:s=>`伝えようとして「${richSign[s].caution}」になったら一回編集。言いたいことより、相手が受け取れる形にする。`,
+ action:s=>`今日いちばん売りたいものを、${core[s].tone}説明で三行にする。`
+},
+venus:{
+ role:"ここは店構え担当。色、写真、雰囲気、パッケージ、見せ方など『なんか好き』を作る部署。",
+ strength:s=>`魅せ方の軸は「${core[s].look}」。${richSign[s].strength}を見た目に翻訳すると、世界観に筋が通る。`,
+ caution:s=>`映えを追いすぎて「${richSign[s].caution}」にならんこと。飾るためやなく、魅力を見つけてもらうための店構えや。`,
+ action:s=>`プロフィール・メニュー・写真のうち一か所だけ、${core[s].look}方向へ整える。`
+},
+mars:{
+ role:"ここは営業部。考えたことを現実でどう動かすか、募集・告知・行動のアクセルを担当する。",
+ strength:s=>`動く時は「${core[s].act}」が強い。${richSign[s].strength}を営業の動きに使うと、無理な根性論より続きやすい。`,
+ caution:s=>`アクセル踏みすぎ・踏まなさすぎのサインは「${richSign[s].caution}」。営業部だけ暴走させんといて🤣`,
+ action:s=>richSign[s].action
+},
+jupiter:{
+ role:"ここは事業拡張部。何を育てると商売の世界が広がるか、次の一手と伸びしろを担当する。",
+ strength:s=>`広げるなら「${core[s].grow}」方向。${richSign[s].strength}を大きく使うほど、次の展開を作りやすい。`,
+ caution:s=>`拡張工事で「${richSign[s].caution}」になったら増築ストップ🤣 何を育ててる会社か見失わんこと。`,
+ action:s=>`今ある仕事の中から『半年育てたいもの』を一つだけ選ぶ。`
+},
+mc:{
+ role:"ここは世間の看板部。内心どう思ってるかより、社会に向けて『何屋として立つか』を担当する。",
+ strength:s=>`外へ掲げる看板は「${core[s].social}」。${richSign[s].strength}を社会向けの役割として見せると分かりやすい。`,
+ caution:s=>`世間受けだけ考えて「${richSign[s].caution}」にならんこと。MCは仮面やなく、社会で使う看板や。`,
+ action:s=>`初対面の人に『何してる人？』と聞かれた時の答えを一文で作る。`
+}
+};
+function richDepartmentHTML(d,s){
+ const v=deptVoice[d.id];
+ return `<img src="./${d.img}" alt=""><div>
+ <h3>${d.label}｜${s}</h3>
+ <p><b>【うちの部署の役目】</b><br>${v.role}</p>
+ <p><b>【売る時の強み】</b><br>${v.strength(s)}</p>
+ <p><b>【部長から注意】</b><br>${v.caution(s)}</p>
+ <p><b>【本日の部長命令】</b><br>${v.action(s)}</p>
+ </div>`;
+}
 function departmentText(d,s){
  const c=core[s], prefixes={sun:"あんたが前に出す核は",moon:"お客さんが『また来よ』と思う鍵は",mercury:"伝える時の武器は",venus:"世界観づくりの鍵は",mars:"動く時の勝ち筋は",jupiter:"事業を育てるなら",mc:"世間から見えやすい看板は"};
  return `${prefixes[d.id]}「${c[d.field]}」。${s}らしい「${c.k}」を、無理に薄めんでええ。`;
@@ -215,7 +284,7 @@ function diagnose(){
  const names={sun:"太陽",moon:"月",mercury:"水星",venus:"金星",mars:"火星",jupiter:"木星",mc:""};
  for(const k of ["sun","moon","mercury","venus","mars","jupiter","mc"]){if(!v[k])continue;const z=document.createElement("div");z.className="astro";z.textContent=`${glyph[k]}${names[k] ? " "+names[k] : ""}　${v[k]} ${degMinWithinSign(raw[k].lon)}`;ag.appendChild(z)}
  const wrap=document.getElementById("departments");wrap.innerHTML="";
- depts.forEach(d=>{if(!v[d.id])return;const el=document.createElement("div");el.className="dept";el.innerHTML=`<img src="./${d.img}" alt=""><div><h3>${d.label}｜${v[d.id]}</h3><p>${departmentText(d,v[d.id])}</p></div>`;wrap.appendChild(el)});
+ depts.forEach(d=>{if(!v[d.id])return;const el=document.createElement("div");el.className="dept";el.innerHTML=richDepartmentHTML(d,v[d.id]);wrap.appendChild(el)});
  document.getElementById("meeting").innerHTML=buildMeeting(v);document.getElementById("dont").textContent=dontMap[v.sun];document.getElementById("order").textContent=orderMap[v.mars];
  document.getElementById("umeko").textContent=v.mc?"会議7人おんのに社長あんた一人や。はよ決裁せぇ🤣":"MCは推測してへん。分かる6部署だけで営業開始や🤣";
  document.getElementById("formCard").style.display="none";document.getElementById("result").style.display="block";window.__last={v,name,type:buildType(v)};window.scrollTo({top:0,behavior:"smooth"});
