@@ -6,10 +6,10 @@
 <meta name="theme-color" content="#fff7ef">
 <title>あんた、何屋で売ってくん。｜自分株式会社の商売会議</title>
 <style>
-:root{--ink:#332923;--sub:#75675e;--line:#eadfd4;--pink:#ff6f91;--gold:#e7a53d;--shadow:0 12px 34px rgba(80,53,34,.12)}
+:root{--ink:#332923;--sub:#75675e;--line:#cfdef2;--pink:#ff6f91;--gold:#e7a53d;--shadow:0 12px 34px rgba(80,53,34,.12)}
 *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;color:var(--ink);background:radial-gradient(circle at 10% 0,#ffe6ee,transparent 30%),radial-gradient(circle at 90% 8%,#fff0c7,transparent 28%),#fff8ef}
 main{width:min(720px,100%);margin:auto;padding:16px 14px 80px}.hero,.card{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow)}.hero{text-align:center;padding:18px}.hero img{width:min(100%,430px);max-height:350px;object-fit:contain}.eyebrow{font-weight:900;color:#a4692b}.hero h1{font-size:clamp(30px,8vw,48px);line-height:1.05;margin:6px 0}.hero p,.small{color:var(--sub);line-height:1.65}.small{font-size:12px}.card{padding:18px;margin-top:14px}.card h2{margin:0 0 10px}label{display:block;font-weight:900;margin:14px 0 6px}.optional{font-size:11px;font-weight:500;color:var(--sub)}input,select{width:100%;font-size:16px;padding:13px;border:1px solid #d9cabe;border-radius:14px;background:#fff}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.notice{font-size:12px;line-height:1.6;padding:11px 12px;border-radius:14px;background:#fff5d9;margin-top:12px}.advanced{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px}summary{font-weight:900;cursor:pointer}button{border:0;border-radius:999px;padding:15px 18px;font-size:16px;font-weight:900;cursor:pointer}.primary{width:100%;margin-top:18px;color:#fff;background:linear-gradient(135deg,#ff6f91,#ef9c47);box-shadow:0 8px 22px rgba(239,111,145,.28)}.secondary{background:#fff;border:1px solid var(--line);color:var(--ink)}
-#result{display:none}.resultHero{text-align:center}.resultHero img{width:min(90%,330px);max-height:270px;object-fit:contain}.pill{display:inline-block;background:#fff0d5;color:#8c5b18;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:900}.type{font-size:27px;font-weight:1000;line-height:1.18;margin:8px 0}.astrogrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}.astro{padding:10px;border-radius:14px;background:#fff8ef;font-size:13px;font-weight:800}.dept{display:grid;grid-template-columns:82px 1fr;gap:12px;border-top:1px dashed var(--line);padding:14px 0}.dept:first-of-type{border-top:0}.dept img{width:82px;height:82px;object-fit:contain}.dept h3{margin:0 0 4px;font-size:17px}.dept p{margin:0 0 12px;line-height:1.72;font-size:14px}.dept p:last-child{margin-bottom:0}.dept b{color:#9b5f2f}.quote{background:#fff4f7;border-left:5px solid var(--pink);padding:14px;border-radius:14px;line-height:1.7}.order{background:#332923;color:#fff;padding:16px;border-radius:18px;font-weight:900;line-height:1.6}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.actions button{flex:1;min-width:130px}.error{display:none;margin-top:12px;padding:12px;border-radius:14px;background:#fff0f0;color:#9a3030;font-weight:700;line-height:1.55}.footer{text-align:center;color:#8c7d72;font-size:11px;line-height:1.65;margin-top:18px}
+#result{display:none}.resultHero{text-align:center}.resultHero img{width:min(90%,330px);max-height:270px;object-fit:contain}.pill{display:inline-block;background:#fff0d5;color:#8c5b18;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:900}.type{font-size:27px;font-weight:1000;line-height:1.18;margin:8px 0}.astrogrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}.astro{padding:10px;border-radius:14px;background:#fff8ef;font-size:13px;font-weight:800}.dept{display:grid;grid-template-columns:82px 1fr;gap:12px;border-top:1px dashed var(--line);padding:14px 0}.dept:first-of-type{border-top:0}.dept img{width:82px;height:82px;object-fit:contain}.dept h3{margin:0 0 4px;font-size:17px}.dept p{margin:0 0 12px;line-height:1.72;font-size:14px}.dept p:last-child{margin-bottom:0}.dept b{color:#5572b2}.quote{background:#eef5ff;border-left:5px solid var(--pink);padding:14px;border-radius:14px;line-height:1.7}.order{background:#332923;color:#fff;padding:16px;border-radius:18px;font-weight:900;line-height:1.6}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.actions button{flex:1;min-width:130px}.error{display:none;margin-top:12px;padding:12px;border-radius:14px;background:#fff0f0;color:#9a3030;font-weight:700;line-height:1.55}.footer{text-align:center;color:#8c7d72;font-size:11px;line-height:1.65;margin-top:18px}
 @media(max-width:520px){.row{grid-template-columns:1fr}.dept{grid-template-columns:70px 1fr}.dept img{width:70px;height:70px}.astrogrid{grid-template-columns:1fr 1fr}}
 
 .reportBook h3{margin:22px 0 6px}.reportBook p{line-height:1.85}.licensePreview{width:100%;border-radius:18px;border:1px solid var(--line);margin-top:12px;-webkit-touch-callout:default}
@@ -25,6 +25,29 @@ main{width:min(720px,100%);margin:auto;padding:16px 14px 80px}.hero,.card{backgr
 }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
+
+<style id="star-skin">
+:root{--ink:#17264f;--sub:#64708f;--line:#cfe0f5;--shadow:0 16px 40px rgba(24,53,115,.16)}
+html{background:#07132f}
+body{color:var(--ink);background:radial-gradient(circle at 12% 5%,rgba(117,221,255,.32),transparent 25%),radial-gradient(circle at 88% 8%,rgba(185,166,255,.30),transparent 26%),linear-gradient(180deg,#07132f 0,#102654 27%,#eaf8ff 73%,#f7f3ff 100%);background-attachment:fixed}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.75;background-image:radial-gradient(circle,#fff 0 1px,transparent 1.6px),radial-gradient(circle,#f2cf79 0 1.1px,transparent 1.7px),radial-gradient(circle,#7fe3ff 0 1px,transparent 1.6px);background-size:53px 53px,89px 89px,127px 127px;background-position:8px 17px,31px 9px,72px 44px}
+main{position:relative}
+.hero,.card{background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(241,248,255,.94));border:1px solid rgba(255,255,255,.82);box-shadow:var(--shadow),0 0 0 1px rgba(117,221,255,.13);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.hero:before{content:"✦  ·  ✧  ·  ✦";display:block;color:#dfbb5a;font-size:22px;letter-spacing:8px;margin-bottom:5px;text-shadow:0 0 12px rgba(242,207,121,.75)}
+.eyebrow{color:#5575ba}.hero h1,.card h2,.type{color:#172a5d}
+.notice,.quote,.astro{background:linear-gradient(135deg,#edfbff,#f4efff);border-color:#cfe0f5}
+input,select{border-color:#c7dbf3;background:#fff}
+input:focus,select:focus{outline:2px solid rgba(117,221,255,.48);border-color:#75d2ef}
+summary,.dept h3,.reportBook h3{color:#294683}.dept b{color:#607bc0}
+.primary{background:linear-gradient(120deg,#55cfea 0%,#748ee8 48%,#ad86e8 100%);box-shadow:0 10px 28px rgba(83,151,224,.34),0 0 18px rgba(117,221,255,.2)}
+.secondary{background:linear-gradient(135deg,#f5fcff,#f3efff);border-color:#cadcf3;color:#29427e}
+.pill{background:linear-gradient(135deg,#e8faff,#f1edff);color:#4564a5}
+.order{background:linear-gradient(135deg,#10234f,#263d78 58%,#5c4f91);border:1px solid rgba(242,207,121,.35);box-shadow:0 10px 24px rgba(18,42,94,.20)}
+.licensePreview{border-color:#c8dcf3;box-shadow:0 8px 22px rgba(33,66,128,.10)}
+.footer{color:#dce8ff;text-shadow:0 1px 2px rgba(0,0,0,.28)}
+@media print{body{background:#fff}}
+</style>
+
 </head>
 <body><main>
 <section class="hero">
@@ -343,7 +366,7 @@ async function buildLicensePreview(v,name,type){
  x.textAlign="left";x.font="700 26px sans-serif";let y=740;
  [["看板","認定"],["接客","認定"],["伝え方","認定"],["店構え","認定"],["営業","認定"],["拡張","認定"]].forEach(r=>{x.fillStyle="#9b6b38";x.fillText(r[0],150,y);x.fillStyle="#332923";x.fillText(r[1],430,y);y+=52});
  x.textAlign="center";x.font="900 28px sans-serif";x.fillText("本日の営業命令",W/2,y+30);x.font="700 24px sans-serif";wrapCanvas(x,orderMap[v.mars],100,y+75,880,38);
- x.font="500 17px sans-serif";x.fillStyle="#8b7a6e";x.fillText("星から読む 自分株式会社の商売会議",W/2,1310);
+ x.font="500 17px sans-serif";x.fillStyle="#7180a2";x.fillText("星から読む 自分株式会社の商売会議",W/2,1310);
  document.getElementById("licensePreview").src=c.toDataURL("image/png");
 }
 function diagnose(){
@@ -365,22 +388,22 @@ async function buildReportImage(){
  const q=window.__last;if(!q)return;
  const {v,name}=q;
  const W=1240,H=1754,P=78;
- const make=()=>{const c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");x.fillStyle="#fffaf4";x.fillRect(0,0,W,H);return [c,x]};
+ const make=()=>{const c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");x.fillStyle="#f7fbff";x.fillRect(0,0,W,H);return [c,x]};
  const wrap=(x,text,maxWidth,font)=>{x.font=font;let out=[],line="";for(const ch of [...text]){const t=line+ch;if(x.measureText(t).width>maxWidth&&line){out.push(line);line=ch}else line=t}if(line)out.push(line);return out};
  const draw=(x,text,x0,y,maxWidth,font,lineH,color="#332923")=>{x.fillStyle=color;for(const l of wrap(x,text,maxWidth,font)){x.fillText(l,x0,y);y+=lineH}return y};
  const header=(x,page,sub)=>{
    x.fillStyle="#332923";x.font="900 27px sans-serif";x.fillText("自分株式会社・商売鑑定書",P,57);
-   x.textAlign="right";x.fillStyle="#9b5f2f";x.font="800 22px sans-serif";x.fillText(`${page}/3`,W-P,57);x.textAlign="left";
+   x.textAlign="right";x.fillStyle="#5572b2";x.font="800 22px sans-serif";x.fillText(`${page}/3`,W-P,57);x.textAlign="left";
    x.fillStyle="#d9c7b5";x.fillRect(P,80,W-P*2,3);
-   x.fillStyle="#9b5f2f";x.font="800 23px sans-serif";x.fillText(sub,P,120);
+   x.fillStyle="#5572b2";x.font="800 23px sans-serif";x.fillText(sub,P,120);
  };
  const box=(x,title,text,y,icon,opts={})=>{
    const font=opts.font||"29px sans-serif", lh=opts.lh||45;
    const lines=wrap(x,text,W-P*2-46,font);
    const h=70+lines.length*lh+30;
-   x.fillStyle=opts.bg||"#fff";x.strokeStyle="#eadfd4";x.lineWidth=2;
+   x.fillStyle=opts.bg||"#fff";x.strokeStyle="#cfdef2";x.lineWidth=2;
    roundRect(x,P,y,W-P*2,h,24);x.fill();x.stroke();
-   x.fillStyle="#9b5f2f";x.font="900 31px sans-serif";x.fillText(`${icon} ${title}`,P+24,y+45);
+   x.fillStyle="#5572b2";x.font="900 31px sans-serif";x.fillText(`${icon} ${title}`,P+24,y+45);
    x.fillStyle="#332923";x.font=font;let ty=y+94;lines.forEach(l=>{x.fillText(l,P+24,ty);ty+=lh});
    return y+h+22;
  };
@@ -394,12 +417,12 @@ async function buildReportImage(){
  // PAGE 1
  let [c1,x1]=make();header(x1,1,"まずここ読んで。あんたの会社、こんな会社。");
  x1.fillStyle="#332923";x1.font="900 58px sans-serif";x1.fillText(name+"株式会社",P,215);
- x1.fillStyle="#9b5f2f";x1.font="900 34px sans-serif";x1.fillText("商売の取扱説明書",P,270);
+ x1.fillStyle="#5572b2";x1.font="900 34px sans-serif";x1.fillText("商売の取扱説明書",P,270);
  try{const im=await loadImageWithFallback("UMEKO_REPORT.PNG","TOP.PNG");x1.drawImage(im,805,145,330,365)}catch(e){}
  let y1=345;
  // Overall uses narrower box to coexist with character at top, then full-width sections.
- x1.fillStyle="#fff4f7";x1.strokeStyle="#f1d9df";roundRect(x1,P,y1,690,360,24);x1.fill();x1.stroke();
- x1.fillStyle="#9b5f2f";x1.font="900 32px sans-serif";x1.fillText("✨ 総合所見",P+25,y1+50);
+ x1.fillStyle="#eef5ff";x1.strokeStyle="#f1d9df";roundRect(x1,P,y1,690,360,24);x1.fill();x1.stroke();
+ x1.fillStyle="#5572b2";x1.font="900 32px sans-serif";x1.fillText("✨ 総合所見",P+25,y1+50);
  let oy=y1+105;oy=draw(x1,overall,P+25,oy,640,"29px sans-serif",46);
  y1=745;
  y1=box(x1,"商売の核",coreT,y1,"🏪",{font:"29px sans-serif",lh:46,bg:"#fff"});
@@ -418,7 +441,7 @@ async function buildReportImage(){
  y2=box(x2,"行動・営業",act,y2,"🔥",{font:"28px sans-serif",lh:44,bg:"#fff"});
  // Footer character fills otherwise dead space.
  try{const im=await loadImageWithFallback("UMEKO_REPORT.PNG","TOP.PNG");const sz=Math.min(230,Math.max(120,H-y2-55));x2.globalAlpha=.20;x2.drawImage(im,W-P-sz,H-sz-30,sz,sz);x2.globalAlpha=1}catch(e){}
- x2.fillStyle="#8b7a6e";x2.font="700 22px sans-serif";x2.fillText("うまく売るより、あんたらしく伝わる形を作る。",P,H-45);
+ x2.fillStyle="#7180a2";x2.font="700 22px sans-serif";x2.fillText("うまく売るより、あんたらしく伝わる形を作る。",P,H-45);
 
  // PAGE 3
  let [c3,x3]=make();header(x3,3,"ここから先。育てる・見せる・詰まりをほどく。");
