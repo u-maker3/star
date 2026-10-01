@@ -143,12 +143,20 @@ function jstDate(dateStr,timeStr){
  return new Date(Date.UTC(y,m-1,d,hh-9,mm,0));
 }
 function calcMC(date,latitude,longitude){
- const observer=new Astronomy.Observer(latitude,longitude,0);
- const t=new Astronomy.AstroTime(date);
- const zenith=new Astronomy.Vector(0,0,1,t);
- const rotation=Astronomy.Rotation_HOR_EQJ(date,observer);
- const eqj=Astronomy.RotateVector(rotation,zenith);
- return norm(Astronomy.Ecliptic(eqj).elon);
+ // Midheaven = ecliptic longitude whose right ascension equals local sidereal time.
+ // East longitude is positive. Latitude is not part of the MC formula.
+ const lstDeg=norm(Astronomy.SiderealTime(date)*15 + longitude);
+ const theta=lstDeg*Math.PI/180;
+
+ // Mean obliquity (IAU/Meeus polynomial; sufficient here and avoids private library APIs).
+ const jd=date.getTime()/86400000 + 2440587.5;
+ const T=(jd-2451545.0)/36525.0;
+ const epsDeg=23 + 26/60 + (21.448 - 46.8150*T - 0.00059*T*T + 0.001813*T*T*T)/3600;
+ const eps=epsDeg*Math.PI/180;
+
+ // atan2 form preserves the correct quadrant:
+ // tan(lambda) = tan(theta) / cos(epsilon)
+ return norm(Math.atan2(Math.sin(theta), Math.cos(theta)*Math.cos(eps))*180/Math.PI);
 }
 function degMinWithinSign(lon){
  let d=norm(lon)%30, deg=Math.floor(d), min=Math.round((d-deg)*60);
@@ -204,8 +212,8 @@ function diagnose(){
  document.getElementById("type").textContent=name+"株式会社："+buildType(v);
  document.getElementById("summary").textContent=`看板は${core[v.sun].k}、伝え方は${core[v.mercury].k}、動き方は${core[v.mars].k}。星の部署ごとに役割を分けて会議したで。`;
  const ag=document.getElementById("astrogrid");ag.innerHTML="";
- const names={sun:"太陽",moon:"月",mercury:"水星",venus:"金星",mars:"火星",jupiter:"木星",mc:"MC"};
- for(const k of ["sun","moon","mercury","venus","mars","jupiter","mc"]){if(!v[k])continue;const z=document.createElement("div");z.className="astro";z.textContent=`${glyph[k]} ${names[k]}　${v[k]} ${degMinWithinSign(raw[k].lon)}`;ag.appendChild(z)}
+ const names={sun:"太陽",moon:"月",mercury:"水星",venus:"金星",mars:"火星",jupiter:"木星",mc:""};
+ for(const k of ["sun","moon","mercury","venus","mars","jupiter","mc"]){if(!v[k])continue;const z=document.createElement("div");z.className="astro";z.textContent=`${glyph[k]}${names[k] ? " "+names[k] : ""}　${v[k]} ${degMinWithinSign(raw[k].lon)}`;ag.appendChild(z)}
  const wrap=document.getElementById("departments");wrap.innerHTML="";
  depts.forEach(d=>{if(!v[d.id])return;const el=document.createElement("div");el.className="dept";el.innerHTML=`<img src="./${d.img}" alt=""><div><h3>${d.label}｜${v[d.id]}</h3><p>${departmentText(d,v[d.id])}</p></div>`;wrap.appendChild(el)});
  document.getElementById("meeting").innerHTML=buildMeeting(v);document.getElementById("dont").textContent=dontMap[v.sun];document.getElementById("order").textContent=orderMap[v.mars];
