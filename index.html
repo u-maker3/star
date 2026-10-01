@@ -82,7 +82,7 @@ main{width:min(720px,100%);margin:auto;padding:16px 14px 80px}.hero,.card{backgr
 <div class="card">
 <h2>🪪 商売・営業許可証</h2>
 <img src="./LICENSE.PNG" alt="営業許可証" style="width:100%;max-height:260px;object-fit:contain">
-<p class="small">下の営業許可証を長押し →「写真に保存」でOK。</p><img id="licensePreview" class="licensePreview" alt="商売・営業許可証"><div class="actions"><button class="secondary" id="printReport">鑑定書を印刷／PDF保存</button><button class="secondary" id="retry">もう一回会議する</button></div>
+<p class="small">下の営業許可証を長押し →「写真に保存」でOK。</p><img id="licensePreview" class="licensePreview" alt="商売・営業許可証"><div class="actions"><button class="secondary" id="printReport">鑑定書をPDFで開く</button><button class="secondary" id="retry">もう一回会議する</button></div>
 </div>
 </section>
 <div class="footer">占星術の象徴を使った娯楽・自己分析コンテンツです。売上・成功・適職を保証するものではありません。<br>
@@ -333,6 +333,28 @@ function diagnose(){
 }
 document.getElementById("diagnose").addEventListener("click",diagnose);
 document.getElementById("retry").addEventListener("click",()=>{document.getElementById("result").style.display="none";document.getElementById("formCard").style.display="block";window.scrollTo({top:0,behavior:"smooth"})});
-document.getElementById("printReport").addEventListener("click",()=>window.print());
+document.getElementById("printReport").addEventListener("click",()=>{
+ const report=document.querySelector(".reportBook");
+ if(!report)return;
+ const w=window.open("","_blank");
+ if(!w){alert("新しい画面を開けへんかった😭 Safariのポップアップ設定を確認してな。");return;}
+ const css=`
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;color:#332923;margin:0;background:#fff}
+  .sheet{max-width:794px;margin:auto;padding:42px 50px}
+  h1{font-size:28px;margin:0 0 20px;border-bottom:3px solid #332923;padding-bottom:12px}
+  h2{font-size:20px;margin:26px 0 7px}
+  h3{font-size:17px;margin:22px 0 6px;page-break-after:avoid}
+  p{font-size:14px;line-height:1.9;margin:0 0 14px}
+  .quote{background:#fff4f7;border-left:5px solid #ff6f91;padding:14px;border-radius:12px;line-height:1.8}
+  .order{background:#332923;color:#fff;padding:16px;border-radius:14px;line-height:1.8;margin-top:24px}
+  .printnote{text-align:center;color:#786a60;font-size:12px;margin:30px 0 0}
+  @media print{.printnote{display:none}.sheet{padding:12mm 15mm}}
+ `;
+ w.document.open();
+ w.document.write(`<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>自分株式会社・商売鑑定書</title><style>${css}</style></head><body><div class="sheet">${report.innerHTML}<p class="printnote">Safariの共有ボタン →「プリント」または「ファイルに保存」で鑑定書として残せます。</p></div></body></html>`);
+ w.document.close();
+ setTimeout(()=>{try{w.focus();w.print()}catch(e){}},500);
+});
 function wrapCanvas(ctx,text,x,y,maxWidth,lineHeight){let line="";for(const ch of [...text]){const t=line+ch;if(ctx.measureText(t).width>maxWidth&&line){ctx.fillText(line,540,y);line=ch;y+=lineHeight}else line=t}if(line)ctx.fillText(line,540,y)}
 </script></body></html>
