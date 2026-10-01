@@ -22,7 +22,7 @@ main{width:min(720px,100%);margin:auto;padding:16px 14px 80px}.hero,.card{backgr
 <img src="./TOP.PNG" alt="自分株式会社の商売会議">
 <div class="eyebrow">星から読む、自分株式会社の商売会議</div>
 <h1>あんた、<br>何屋で売ってくん。</h1>
-<p>星座を自分で調べる作業、廃止しました🤣<br>生年月日から6天体を自動計算。出生時刻＋出生地が分かればMCまで会議します。</p>
+<p>星座を自分で調べる作業、廃止しました🙌<br>生年月日から6天体を自動計算。出生時刻＋出生地が分かればMCまで会議します。</p>
 <div class="notice">日本生まれ（JST）向け。出生時刻が不明でも、同じ日の中で星座が変わらない天体は自動判定します。時刻によって星座が変わる場合は、勝手に決めず診断を止めます。</div>
 </section>
 
@@ -78,18 +78,22 @@ main{width:min(720px,100%);margin:auto;padding:16px 14px 80px}.hero,.card{backgr
 <h3>⚠️ 商売で詰まりやすいところ</h3><p id="reportRisk"></p>
 <h3>🧭 これからの商売方針</h3><p id="reportPolicy"></p>
 <div class="order"><b>最終決裁</b><br><span id="finalDecision"></span></div>
-<p class="small">↓ 鑑定書画像は長押し →「写真に保存」でOK。</p>
-<img id="reportPreview" class="licensePreview" alt="自分株式会社・商売鑑定書">
+<p class="small">↓ A4鑑定書を3枚作るで。できた画像はそれぞれ長押し →「写真に保存」。</p>
+<div id="reportPages">
+<img id="reportPage1" class="licensePreview" alt="商売鑑定書 1ページ目">
+<img id="reportPage2" class="licensePreview" alt="商売鑑定書 2ページ目" style="display:none">
+<img id="reportPage3" class="licensePreview" alt="商売鑑定書 3ページ目" style="display:none">
+</div>
 </div>
 <div class="card">
 <h2>🪪 商売・営業許可証</h2>
 <img src="./LICENSE.PNG" alt="営業許可証" style="width:100%;max-height:260px;object-fit:contain">
-<p class="small">下の営業許可証を長押し →「写真に保存」でOK。</p><img id="licensePreview" class="licensePreview" alt="商売・営業許可証"><div class="actions"><button class="secondary" id="printReport">鑑定書画像を作る</button><button class="secondary" id="retry">もう一回会議する</button></div>
+<p class="small">下の営業許可証を長押し →「写真に保存」でOK。</p><img id="licensePreview" class="licensePreview" alt="商売・営業許可証"><div class="actions"><button class="secondary" id="printReport">A4鑑定書を3枚作る</button><button class="secondary" id="retry">もう一回会議する</button></div>
 </div>
 </section>
 <div class="footer">占星術の象徴を使った娯楽・自己分析コンテンツです。売上・成功・適職を保証するものではありません。<br>
 天体計算：Astronomy Engine 2.1.19 (MIT License, © 2019–2025 Don Cross)。<br>
-市区町村データ：code4fukui/localgovjp (CC0)。入力した生年月日・時刻・出生地を外部送信する処理はありません。</div>
+市区町村データ：code4fukui/localgovjp (CC0)。入力した生年月日・時刻・出生地を外部送信する処理はありません。<br>鑑定書画像：UMEKO_REPORT.PNG</div>
 </main>
 <script>
 
@@ -189,7 +193,7 @@ function calculateChart(){
  clearError();
  if(typeof Astronomy==="undefined"){showError("天体計算エンジンを読み込めませんでした。通信環境を確認して、もう一度開いてな。");return null}
  const ds=document.getElementById("birthdate").value, ts=document.getElementById("birthtime").value;
- if(!ds){showError("生年月日を入れてな🤣");return null}
+ if(!ds){showError("生年月日を入れてな📅");return null}
  let exact=!!ts, date, raw, uncertain=[];
  if(exact){
    date=jstDate(ds,ts); raw=calcSix(date);
@@ -198,7 +202,7 @@ function calculateChart(){
    raw=calcSix(jstDate(ds,"12:00")); date=jstDate(ds,"12:00");
    for(const k of Object.keys(raw)) if(signOf(a[k].lon)!==signOf(b[k].lon)) uncertain.push(`${glyph[k]} ${k==="moon"?"月":k==="sun"?"太陽":k==="mercury"?"水星":k==="venus"?"金星":k==="mars"?"火星":"木星"}：${signOf(a[k].lon)} または ${signOf(b[k].lon)}`);
    if(uncertain.length){
-     showError("この日は出生時刻によって星座が変わる天体があります。ここは勝手に決めへんで🤣<br><br>"+uncertain.join("<br>")+"<br><br>正確な診断には出生時刻を入れてください。");
+     showError("この日は出生時刻によって星座が変わる天体があります。ここは勝手に決めへんで⚠️<br><br>"+uncertain.join("<br>")+"<br><br>正確な診断には出生時刻を入れてください。");
      return null;
    }
  }
@@ -221,13 +225,13 @@ const richSign={
 "双子座":{strength:"情報を集め、軽やかな言葉で人につなぐ力",caution:"面白そうな方へ飛びすぎて看板が散らかる",action:"今日伝えたいことを一文にする"},
 "蟹座":{strength:"人の気持ちを拾い、戻ってきたくなる居場所を作る力",caution:"世話を焼きすぎて自分が店員兼お客さん兼警備員になる",action:"大事にしたいお客さんを一人思い浮かべる"},
 "獅子座":{strength:"自分らしさを堂々と見せ、場を明るくする表現力",caution:"遠慮して主役を降りると魅力まで消える",action:"今日いちばん見てほしいものを一番前へ出す"},
-"乙女座":{strength:"細部を整え、役に立つ形へ仕上げる改善力",caution:"直す場所を探し続けて永遠に開店できない",action:"導線を一か所だけ改善して終わる"},
+"乙女座":{strength:"細部を整え、役に立つ形へ仕上げる改善力",caution:"直す場所を探し続けて永遠に開店できへん🛠️",action:"導線を一か所だけ改善して終わる"},
 "天秤座":{strength:"人と価値を美しくつなぎ、選びやすく見せる調整力",caution:"全員に好かれようとして自分の看板が薄くなる",action:"『これがうちの看板』を一つ決める"},
 "蠍座":{strength:"ひとつを深く掘り、濃い信頼へ変える集中力",caution:"濃さを隠して無難な薄味になる",action:"誰より深く語れるテーマを一つ前へ出す"},
-"射手座":{strength:"学びと経験を外へ運び、世界を広げる展開力",caution:"次の面白いことへ走って昨日の店を忘れる",action:"次に試したいことを一つ予定へ入れる"},
-"山羊座":{strength:"積み上げを仕組みと実績に変える継続力",caution:"実績が揃うまで名乗らず準備室に住み着く",action:"続けたい仕事の次の三回を決める"},
+"射手座":{strength:"学びと経験を外へ運び、世界を広げる展開力",caution:"次の面白いことへ走って昨日の店を忘れる🧳",action:"次に試したいことを一つ予定へ入れる"},
+"山羊座":{strength:"積み上げを仕組みと実績に変える継続力",caution:"実績が揃うまで名乗らず準備室に住み着く📚",action:"続けたい仕事の次の三回を決める"},
 "水瓶座":{strength:"当たり前を疑い、自分式の仕組みを作る独創力",caution:"違うこと自体が目的になって客を置いていく",action:"普通こうする、を一つだけ外して試す"},
-"魚座":{strength:"言葉にならない感覚を世界観へ変える共感力",caution:"雰囲気で全部伝わると思って申込方法まで霞ませる",action:"頭の中のイメージを一つ形にする"}
+"魚座":{strength:"言葉にならない感覚を世界観へ変える共感力",caution:"雰囲気で全部伝わると思って申込方法まで霞ませる☁️",action:"頭の中のイメージを一つ形にする"}
 };
 const deptVoice={
 sun:{
@@ -257,13 +261,13 @@ venus:{
 mars:{
  role:"ここは営業部。考えたことを現実でどう動かすか、募集・告知・行動のアクセルを担当する。",
  strength:s=>`動く時は「${core[s].act}」が強い。${richSign[s].strength}を営業の動きに使うと、無理な根性論より続きやすい。`,
- caution:s=>`アクセル踏みすぎ・踏まなさすぎのサインは「${richSign[s].caution}」。営業部だけ暴走させんといて🤣`,
+ caution:s=>`アクセル踏みすぎ・踏まなさすぎのサインは「${richSign[s].caution}」。営業部だけ暴走させんといて🏃‍♀️💨`,
  action:s=>richSign[s].action
 },
 jupiter:{
  role:"ここは事業拡張部。何を育てると商売の世界が広がるか、次の一手と伸びしろを担当する。",
  strength:s=>`広げるなら「${core[s].grow}」方向。${richSign[s].strength}を大きく使うほど、次の展開を作りやすい。`,
- caution:s=>`拡張工事で「${richSign[s].caution}」になったら増築ストップ🤣 何を育ててる会社か見失わんこと。`,
+ caution:s=>`拡張工事で「${richSign[s].caution}」になったら増築ストップ🛑 何を育ててる会社か見失わんこと。`,
  action:s=>`今ある仕事の中から『半年育てたいもの』を一つだけ選ぶ。`
 },
 mc:{
@@ -299,16 +303,16 @@ function fillLongReport(v,name){
  const A=core[v.sun],B=core[v.moon],C=core[v.mercury],D=core[v.venus],E=core[v.mars],F=core[v.jupiter];
  const put=(id,t)=>document.getElementById(id).textContent=t;
  put("overall",`${name}株式会社は、「${A.k}」を商売の芯に、「${C.k}」で伝え、「${E.k}」で現実を動かす会社。全部ひとりで同じテンションで頑張ろ思たら、そら社長倒れる🤣 看板・接客・言葉・見せ方・営業・拡張、部署ごとに働かせた方があんたの商売は回りやすい。`);
- put("reportCore",`前に出したい価値は「${A.v}」。メニュー増やしたら売れる、ちゃうで🤣 「この人、何を大事にして仕事してんの？」が伝わった時に看板は強なる。${richSign[v.sun].strength}を商品やサービスの中心へ置くのが土台。`);
+ put("reportCore",`前に出したい価値は「${A.v}」。メニュー増やしたら売れる、ちゃうで🛍️ 「この人、何を大事にして仕事してんの？」が伝わった時に看板は強なる。${richSign[v.sun].strength}を商品やサービスの中心へ置くのが土台。`);
  put("reportCustomer",`お客さんが戻ってくる鍵は「${B.v}」と感じられること。技術と値段だけ見てへんで。しゃべった時の感じ、帰る時の気分、「また来よかな」まで全部商品や。${richSign[v.moon].strength}を接客に使いつつ、${richSign[v.moon].caution}状態にならない線引きも必要。`);
  put("reportMessage",`伝える時は「${C.tone}」が基本。説明ぎゅうぎゅうに詰めたら親切、とは限らん🤣 「この人の話、分かるわ」が勝ち。投稿・プロフィール・メニュー説明・対面トークを同じ言葉遣いでつなぐと、商売の印象がまとまりやすい。`);
- put("reportBrand",`見せ方は「${D.look}」が軸。写真だけオシャレにしても店は完成せん🤣 文字も余白もパッケージも接客も、同じ空気になったら「あ、あんたの店や」になる。${richSign[v.venus].strength}が視覚に出るほど「あの人っぽい」が育つ。`);
- put("reportAction",`営業では「${E.act}」が自然に動きやすい型。嫌いな営業を根性で続けて毎回しんどなるん、もうええ🤣 自分が動けるテンポに募集も告知も合わせたらええ。注意したいのは${richSign[v.mars].caution}こと。`);
- put("reportGrowth",`育てる方向は「${F.grow}」。何でもかんでも増築したら、最終的に何屋か分からん建物できるで🤣 反応ある・続けられる・もっと育てたい。このへんから増やそ。「何屋として広げるか」を確認してから増築する。`);
- put("reportPublic",v.mc?`社会へ掲げる看板は「${core[v.mc].social}」。初対面で「で、何してる人なん？」になったら看板迷子🤣 一言で何を頼める人か伝わるようにしとこ。${richSign[v.mc].strength}を社会向けの役割として見せると伝わりやすい。`:`出生時刻・出生地が揃っていないため、ここは推測していません。分からんもんを、たぶんコレやろで埋めるんはナシ🤣 今回は分かる6部署だけで、ちゃんと会議しとく。`);
+ put("reportBrand",`見せ方は「${D.look}」が軸。写真だけオシャレにしても店は完成せん🎨 文字も余白もパッケージも接客も、同じ空気になったら「あ、あんたの店や」になる。${richSign[v.venus].strength}が視覚に出るほど「あの人っぽい」が育つ。`);
+ put("reportAction",`営業では「${E.act}」が自然に動きやすい型。嫌いな営業を根性で続けて毎回しんどなるん、もうええ✋ 自分が動けるテンポに募集も告知も合わせたらええ。注意したいのは${richSign[v.mars].caution}こと。`);
+ put("reportGrowth",`育てる方向は「${F.grow}」。何でもかんでも増築したら、最終的に何屋か分からん建物できるで🏗️ 反応ある・続けられる・もっと育てたい。このへんから増やそ。「何屋として広げるか」を確認してから増築する。`);
+ put("reportPublic",v.mc?`社会へ掲げる看板は「${core[v.mc].social}」。初対面で「で、何してる人なん？」になったら看板迷子🪧 一言で何を頼める人か伝わるようにしとこ。${richSign[v.mc].strength}を社会向けの役割として見せると伝わりやすい。`:`出生時刻・出生地が揃っていないため、ここは推測していません。分からんもんを、たぶんコレやろで埋めるんはナシ⚠️ 今回は分かる6部署だけで、ちゃんと会議しとく。`);
  put("reportRisk",`注意したいのは「${richSign[v.sun].caution}」ことと、営業面で「${richSign[v.mars].caution}」状態になること。あんたに魅力がないんちゃう。持ち味を働かせすぎるか、逆に休ませすぎた時に「なんで回らんねん」が起きやすい。`);
- put("reportPolicy",`まず「${A.v}」を看板として明確にし、発信は「${C.tone}」、行動は「${E.act}」で統一する。そのうえで「${F.grow}」を半年単位で育てる。新しいもん足す前に「それ、うちの会社に要るん？」って一回会議して🤣 足すんはその後や。`);
- put("finalDecision",`${orderMap[v.mars]}　全部いっぺんに直そうとすな🤣 今日ひとつ決裁。ほんで商売を1ミリ動かす。それで優勝。`);
+ put("reportPolicy",`まず「${A.v}」を看板として明確にし、発信は「${C.tone}」、行動は「${E.act}」で統一する。そのうえで「${F.grow}」を半年単位で育てる。新しいもん足す前に「それ、うちの会社に要るん？」って一回会議して📝 足すんはその後や。`);
+ put("finalDecision",`${orderMap[v.mars]}　全部いっぺんに直そうとすな☝️ 今日ひとつ決裁。ほんで商売を1ミリ動かす。それで優勝。`);
 }
 async function buildLicensePreview(v,name,type){
  const W=1080,H=1350,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");
@@ -329,7 +333,7 @@ function diagnose(){
  const wrap=document.getElementById("departments");wrap.innerHTML="";
  depts.forEach(d=>{if(!v[d.id])return;const el=document.createElement("div");el.className="dept";el.innerHTML=richDepartmentHTML(d,v[d.id]);wrap.appendChild(el)});
  document.getElementById("meeting").innerHTML=buildMeeting(v);document.getElementById("dont").textContent=dontMap[v.sun];document.getElementById("order").textContent=orderMap[v.mars];
- document.getElementById("umeko").textContent=v.mc?"会議7人おんのに社長あんた一人や。はよ決裁せぇ🤣":"MCは推測してへん。分かる6部署だけで営業開始や🤣";
+ document.getElementById("umeko").textContent=v.mc?"会議7人おんのに社長あんた一人や。はよ決裁せぇ📌":"MCは推測してへん。分かる6部署だけで営業開始や🙆‍♀️";
  fillLongReport(v,name);buildLicensePreview(v,name,buildType(v));
  document.getElementById("formCard").style.display="none";document.getElementById("result").style.display="block";window.__last={v,name,type:buildType(v)};window.scrollTo({top:0,behavior:"smooth"});
 }
@@ -339,39 +343,86 @@ document.getElementById("printReport").addEventListener("click",()=>buildReportI
 async function buildReportImage(){
  const q=window.__last;if(!q)return;
  const {v,name}=q;
- const sections=[
- ["総合所見",document.getElementById("overall").textContent],
- ["商売の核",document.getElementById("reportCore").textContent],
- ["お客さんとの関係",document.getElementById("reportCustomer").textContent],
- ["伝え方・発信",document.getElementById("reportMessage").textContent],
- ["世界観・見せ方",document.getElementById("reportBrand").textContent],
- ["行動・営業",document.getElementById("reportAction").textContent],
- ["育てる方向",document.getElementById("reportGrowth").textContent],
- ["社会に掲げる看板",document.getElementById("reportPublic").textContent],
- ["商売で詰まりやすいところ",document.getElementById("reportRisk").textContent],
- ["これからの商売方針",document.getElementById("reportPolicy").textContent],
- ["最終決裁",document.getElementById("finalDecision").textContent]
- ];
- const W=1240, pad=90, lineH=42, titleH=150;
- const tmp=document.createElement("canvas").getContext("2d");tmp.font="26px sans-serif";
- function lines(text,max=1060){let out=[],line="";for(const ch of [...text]){let t=line+ch;if(tmp.measureText(t).width>max&&line){out.push(line);line=ch}else line=t}if(line)out.push(line);return out}
- let H=titleH+80;
- sections.forEach(([h,t])=>H+=65+lines(t).length*lineH+35);
- H+=90;
- const c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");
- x.fillStyle="#fffaf4";x.fillRect(0,0,W,H);
- x.fillStyle="#332923";x.textAlign="center";x.font="900 48px sans-serif";x.fillText("自分株式会社・商売鑑定書",W/2,75);
- x.font="800 30px sans-serif";x.fillText(name+"株式会社",W/2,125);
- let y=205;x.textAlign="left";
- sections.forEach(([h,t],i)=>{
-   x.fillStyle=i===sections.length-1?"#332923":"#9b5f2f";x.font="900 30px sans-serif";x.fillText("【"+h+"】",pad,y);y+=52;
-   x.fillStyle="#332923";x.font="26px sans-serif";
-   for(const line of lines(t)){x.fillText(line,pad,y);y+=lineH}
-   y+=35;
+ const W=1240,H=1754,P=86;
+ const make=()=>{const c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");x.fillStyle="#fffaf4";x.fillRect(0,0,W,H);return [c,x]};
+ const wrap=(x,text,maxWidth,font,lineH)=>{
+   x.font=font;let out=[],line="";
+   for(const ch of [...text]){const t=line+ch;if(x.measureText(t).width>maxWidth&&line){out.push(line);line=ch}else line=t}
+   if(line)out.push(line);return {lines:out,lineH};
+ };
+ const drawText=(x,text,x0,y,maxWidth,font,lineH,color="#332923")=>{
+   x.fillStyle=color;const w=wrap(x,text,maxWidth,font,lineH);w.lines.forEach(l=>{x.fillText(l,x0,y);y+=lineH});return y;
+ };
+ const header=(x,page,sub)=>{
+   x.fillStyle="#332923";x.font="900 24px sans-serif";x.fillText("自分株式会社・商売鑑定書",P,58);
+   x.textAlign="right";x.fillStyle="#9b5f2f";x.font="700 20px sans-serif";x.fillText(`${page}/3`,W-P,58);x.textAlign="left";
+   x.fillStyle="#eadfd4";x.fillRect(P,78,W-P*2,2);
+   x.fillStyle="#9b5f2f";x.font="800 20px sans-serif";x.fillText(sub,P,112);
+ };
+ const section=(x,title,text,y,icon)=>{
+   x.fillStyle="#fff1df";x.fillRect(P,y-35,W-P*2,52);
+   x.fillStyle="#332923";x.font="900 27px sans-serif";x.fillText(`${icon} ${title}`,P+18,y);
+   y+=52; y=drawText(x,text,P+8,y,W-P*2-16,"25px sans-serif",39); return y+32;
+ };
+ const overall=document.getElementById("overall").textContent;
+ const coreT=document.getElementById("reportCore").textContent;
+ const cust=document.getElementById("reportCustomer").textContent;
+ const msg=document.getElementById("reportMessage").textContent;
+ const brand=document.getElementById("reportBrand").textContent;
+ const act=document.getElementById("reportAction").textContent;
+ const growth=document.getElementById("reportGrowth").textContent;
+ const pub=document.getElementById("reportPublic").textContent;
+ const risk=document.getElementById("reportRisk").textContent;
+ const policy=document.getElementById("reportPolicy").textContent;
+ const decision=document.getElementById("finalDecision").textContent;
+
+ // PAGE 1: cover + overall + core + first action
+ let [c1,x1]=make(); header(x1,1,"まずここ読んで。あんたの会社、こんな会社。");
+ try{
+   const im=new Image();im.src="./UMEKO_REPORT.PNG";await im.decode();
+   x1.drawImage(im,760,125,380,420);
+ }catch(e){}
+ x1.fillStyle="#332923";x1.font="900 54px sans-serif";x1.fillText(name+"株式会社",P,200);
+ x1.fillStyle="#9b5f2f";x1.font="900 31px sans-serif";x1.fillText("商売の取扱説明書",P,252);
+ x1.fillStyle="#fff4f7";x1.fillRect(P,310,650,245);
+ x1.fillStyle="#332923";x1.font="900 28px sans-serif";x1.fillText("✨ 総合所見",P+22,355);
+ let y1=drawText(x1,overall,P+22,405,606,"25px sans-serif",39);
+ y1=Math.max(635,y1+30);
+ y1=section(x1,"商売の核",coreT,y1,"🏪");
+ x1.fillStyle="#332923";x1.fillRect(P,y1,W-P*2,190);
+ x1.fillStyle="#fff";x1.font="900 28px sans-serif";x1.fillText("📌 まず最初の決裁",P+25,y1+45);
+ drawText(x1,decision,P+25,y1+92,W-P*2-50,"700 25px sans-serif",40,"#fff");
+ x1.fillStyle="#8b7a6e";x1.font="20px sans-serif";x1.fillText("全部いっぺんにやらんでええ。1ミリ動いたら今日は優勝。",P,H-55);
+
+ // PAGE 2: customer/message/brand/action
+ let [c2,x2]=make(); header(x2,2,"お客さんに届くまで。接客・言葉・見せ方・営業。");
+ let y2=165;
+ y2=section(x2,"お客さんとの関係",cust,y2,"🤝");
+ y2=section(x2,"伝え方・発信",msg,y2,"📣");
+ y2=section(x2,"世界観・見せ方",brand,y2,"🎨");
+ y2=section(x2,"行動・営業",act,y2,"🔥");
+ try{
+   const im=new Image();im.src="./UMEKO_REPORT.PNG";await im.decode();
+   x2.globalAlpha=.16;x2.drawImage(im,860,H-380,270,300);x2.globalAlpha=1;
+ }catch(e){}
+ x2.fillStyle="#8b7a6e";x2.font="20px sans-serif";x2.fillText("うまく売るより、あんたらしく伝わる形を作る。",P,H-55);
+
+ // PAGE 3: growth/public/risk/policy/final
+ let [c3,x3]=make(); header(x3,3,"ここから先。育てる・見せる・詰まりをほどく。");
+ let y3=165;
+ y3=section(x3,"育てる方向",growth,y3,"🌱");
+ y3=section(x3,"社会に掲げる看板",pub,y3,"🏢");
+ y3=section(x3,"商売で詰まりやすいところ",risk,y3,"⚠️");
+ y3=section(x3,"これからの商売方針",policy,y3,"🧭");
+ x3.fillStyle="#332923";x3.fillRect(P,y3,W-P*2,220);
+ x3.fillStyle="#fff";x3.font="900 30px sans-serif";x3.fillText("🐱 うめこ最終決裁",P+25,y3+48);
+ drawText(x3,decision,P+25,y3+100,W-P*2-50,"700 25px sans-serif",40,"#fff");
+ x3.fillStyle="#9b5f2f";x3.font="900 25px sans-serif";x3.fillText("あんたの会社や。あんたが回せる商売にせぇ。",P,H-70);
+
+ [["reportPage1",c1],["reportPage2",c2],["reportPage3",c3]].forEach(([id,c])=>{
+   const im=document.getElementById(id);im.src=c.toDataURL("image/png");im.style.display="block";
  });
- x.textAlign="center";x.fillStyle="#8b7a6e";x.font="20px sans-serif";x.fillText("星から読む 自分株式会社の商売会議",W/2,H-40);
- document.getElementById("reportPreview").src=c.toDataURL("image/png");
- document.getElementById("reportPreview").scrollIntoView({behavior:"smooth",block:"center"});
+ document.getElementById("reportPage1").scrollIntoView({behavior:"smooth",block:"start"});
 }
 function wrapCanvas(ctx,text,x,y,maxWidth,lineHeight){let line="";for(const ch of [...text]){const t=line+ch;if(ctx.measureText(t).width>maxWidth&&line){ctx.fillText(line,540,y);line=ch;y+=lineHeight}else line=t}if(line)ctx.fillText(line,540,y)}
 </script></body></html>
