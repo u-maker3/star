@@ -14,15 +14,24 @@ main{width:min(720px,100%);margin:auto;padding:16px 14px 80px}.hero,.card{backgr
 
 .reportBook h3{margin:22px 0 6px}.reportBook p{line-height:1.85}.licensePreview{width:100%;border-radius:18px;border:1px solid var(--line);margin-top:12px;-webkit-touch-callout:default}
 @media print{body{background:#fff}.hero,#formCard,.actions,.footer,.card:not(.reportBook){display:none!important}main{width:100%;padding:0}.reportBook{display:block!important;box-shadow:none;border:0;padding:15mm}.reportBook h3{page-break-after:avoid}.reportBook p{line-height:1.8}}
+
+.topImage{
+  display:block;
+  width:min(100%,430px);
+  height:auto;
+  max-height:350px;
+  object-fit:contain;
+  margin:0 auto 8px;
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
 </head>
 <body><main>
 <section class="hero">
-<img src="./TOP.PNG" alt="自分株式会社の商売会議">
+<img src="TOP.PNG?v=20261001" alt="自分株式会社の商売会議">
 <div class="eyebrow">星から読む、自分株式会社の商売会議</div>
 <h1>あんた、<br>何屋で売ってくん。</h1>
-<p>星座を自分で調べる作業、廃止しました🙌<br>生年月日から6天体を自動計算。出生時刻＋出生地が分かればMCまで会議します。</p>
+<p>生年月日から6天体を自動計算。出生時刻＋出生地が分かればMCまで会議します。</p>
 <div class="notice">日本生まれ（JST）向け。出生時刻が不明でも、同じ日の中で星座が変わらない天体は自動判定します。時刻によって星座が変わる場合は、勝手に決めず診断を止めます。</div>
 </section>
 
@@ -52,7 +61,7 @@ main{width:min(720px,100%);margin:auto;padding:16px 14px 80px}.hero,.card{backgr
 
 <section id="result">
 <div class="card resultHero">
-<img src="./RESULT.PNG" alt="決裁">
+<img src="RESULT.PNG?v=20261001" alt="決裁">
 <div class="pill" id="mode"></div>
 <div class="type" id="type"></div>
 <p id="summary"></p>
@@ -87,7 +96,7 @@ main{width:min(720px,100%);margin:auto;padding:16px 14px 80px}.hero,.card{backgr
 </div>
 <div class="card">
 <h2>🪪 商売・営業許可証</h2>
-<img src="./LICENSE.PNG" alt="営業許可証" style="width:100%;max-height:260px;object-fit:contain">
+<img src="LICENSE.PNG?v=20261001" alt="営業許可証" style="width:100%;max-height:260px;object-fit:contain">
 <p class="small">下の営業許可証を長押し →「写真に保存」でOK。</p><img id="licensePreview" class="licensePreview" alt="商売・営業許可証"><div class="actions"><button class="secondary" id="printReport">A4鑑定書を3枚作る</button><button class="secondary" id="retry">もう一回会議する</button></div>
 </div>
 </section>
@@ -97,7 +106,19 @@ main{width:min(720px,100%);margin:auto;padding:16px 14px 80px}.hero,.card{backgr
 </main>
 <script>
 
+
 "use strict";
+async function loadImageWithFallback(primary, fallback){
+  const tryLoad = src => new Promise((resolve,reject)=>{
+    const im = new Image();
+    im.onload = ()=>resolve(im);
+    im.onerror = reject;
+    im.src = src + (src.includes("?") ? "&" : "?") + "v=20261001";
+  });
+  try { return await tryLoad(primary); }
+  catch(e) { return await tryLoad(fallback); }
+}
+
 let municipalities=[];
 (async function loadMunicipalities(){
  try{
@@ -279,7 +300,7 @@ mc:{
 };
 function richDepartmentHTML(d,s){
  const v=deptVoice[d.id];
- return `<img src="./${d.img}" alt=""><div>
+ return `<img src="${d.img}" alt="" onerror="this.style.display=\'none\';this.parentElement.style.gridTemplateColumns=\'1fr\'"><div>
  <h3>${d.label}</h3>
  <p><b>【うちの部署の役目】</b><br>${v.role}</p>
  <p><b>【売る時の強み】</b><br>${v.strength(s)}</p>
@@ -317,7 +338,7 @@ function fillLongReport(v,name){
 async function buildLicensePreview(v,name,type){
  const W=1080,H=1350,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");
  x.fillStyle="#fff8ef";x.fillRect(0,0,W,H);x.textAlign="center";x.fillStyle="#332923";x.font="900 54px sans-serif";x.fillText("商売・営業許可証",W/2,85);
- try{const im=new Image();im.src="./LICENSE.PNG";await im.decode();x.drawImage(im,330,125,420,370)}catch(e){}
+ try{const im=await loadImageWithFallback("LICENSE.PNG","RESULT.PNG");x.drawImage(im,330,125,420,370)}catch(e){}
  x.font="900 40px sans-serif";x.fillText(name+"株式会社",W/2,555);x.font="800 29px sans-serif";wrapCanvas(x,type,100,620,880,42);
  x.textAlign="left";x.font="700 26px sans-serif";let y=740;
  [["看板","認定"],["接客","認定"],["伝え方","認定"],["店構え","認定"],["営業","認定"],["拡張","認定"]].forEach(r=>{x.fillStyle="#9b6b38";x.fillText(r[0],150,y);x.fillStyle="#332923";x.fillText(r[1],430,y);y+=52});
@@ -343,86 +364,80 @@ document.getElementById("printReport").addEventListener("click",()=>buildReportI
 async function buildReportImage(){
  const q=window.__last;if(!q)return;
  const {v,name}=q;
- const W=1240,H=1754,P=86;
+ const W=1240,H=1754,P=78;
  const make=()=>{const c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");x.fillStyle="#fffaf4";x.fillRect(0,0,W,H);return [c,x]};
- const wrap=(x,text,maxWidth,font,lineH)=>{
-   x.font=font;let out=[],line="";
-   for(const ch of [...text]){const t=line+ch;if(x.measureText(t).width>maxWidth&&line){out.push(line);line=ch}else line=t}
-   if(line)out.push(line);return {lines:out,lineH};
- };
- const drawText=(x,text,x0,y,maxWidth,font,lineH,color="#332923")=>{
-   x.fillStyle=color;const w=wrap(x,text,maxWidth,font,lineH);w.lines.forEach(l=>{x.fillText(l,x0,y);y+=lineH});return y;
- };
+ const wrap=(x,text,maxWidth,font)=>{x.font=font;let out=[],line="";for(const ch of [...text]){const t=line+ch;if(x.measureText(t).width>maxWidth&&line){out.push(line);line=ch}else line=t}if(line)out.push(line);return out};
+ const draw=(x,text,x0,y,maxWidth,font,lineH,color="#332923")=>{x.fillStyle=color;for(const l of wrap(x,text,maxWidth,font)){x.fillText(l,x0,y);y+=lineH}return y};
  const header=(x,page,sub)=>{
-   x.fillStyle="#332923";x.font="900 24px sans-serif";x.fillText("自分株式会社・商売鑑定書",P,58);
-   x.textAlign="right";x.fillStyle="#9b5f2f";x.font="700 20px sans-serif";x.fillText(`${page}/3`,W-P,58);x.textAlign="left";
-   x.fillStyle="#eadfd4";x.fillRect(P,78,W-P*2,2);
-   x.fillStyle="#9b5f2f";x.font="800 20px sans-serif";x.fillText(sub,P,112);
+   x.fillStyle="#332923";x.font="900 27px sans-serif";x.fillText("自分株式会社・商売鑑定書",P,57);
+   x.textAlign="right";x.fillStyle="#9b5f2f";x.font="800 22px sans-serif";x.fillText(`${page}/3`,W-P,57);x.textAlign="left";
+   x.fillStyle="#d9c7b5";x.fillRect(P,80,W-P*2,3);
+   x.fillStyle="#9b5f2f";x.font="800 23px sans-serif";x.fillText(sub,P,120);
  };
- const section=(x,title,text,y,icon)=>{
-   x.fillStyle="#fff1df";x.fillRect(P,y-35,W-P*2,52);
-   x.fillStyle="#332923";x.font="900 27px sans-serif";x.fillText(`${icon} ${title}`,P+18,y);
-   y+=52; y=drawText(x,text,P+8,y,W-P*2-16,"25px sans-serif",39); return y+32;
+ const box=(x,title,text,y,icon,opts={})=>{
+   const font=opts.font||"29px sans-serif", lh=opts.lh||45;
+   const lines=wrap(x,text,W-P*2-46,font);
+   const h=70+lines.length*lh+30;
+   x.fillStyle=opts.bg||"#fff";x.strokeStyle="#eadfd4";x.lineWidth=2;
+   roundRect(x,P,y,W-P*2,h,24);x.fill();x.stroke();
+   x.fillStyle="#9b5f2f";x.font="900 31px sans-serif";x.fillText(`${icon} ${title}`,P+24,y+45);
+   x.fillStyle="#332923";x.font=font;let ty=y+94;lines.forEach(l=>{x.fillText(l,P+24,ty);ty+=lh});
+   return y+h+22;
  };
- const overall=document.getElementById("overall").textContent;
- const coreT=document.getElementById("reportCore").textContent;
- const cust=document.getElementById("reportCustomer").textContent;
- const msg=document.getElementById("reportMessage").textContent;
- const brand=document.getElementById("reportBrand").textContent;
- const act=document.getElementById("reportAction").textContent;
- const growth=document.getElementById("reportGrowth").textContent;
- const pub=document.getElementById("reportPublic").textContent;
- const risk=document.getElementById("reportRisk").textContent;
- const policy=document.getElementById("reportPolicy").textContent;
+ const overall=document.getElementById("overall").textContent, coreT=document.getElementById("reportCore").textContent;
+ const cust=document.getElementById("reportCustomer").textContent, msg=document.getElementById("reportMessage").textContent;
+ const brand=document.getElementById("reportBrand").textContent, act=document.getElementById("reportAction").textContent;
+ const growth=document.getElementById("reportGrowth").textContent, pub=document.getElementById("reportPublic").textContent;
+ const risk=document.getElementById("reportRisk").textContent, policy=document.getElementById("reportPolicy").textContent;
  const decision=document.getElementById("finalDecision").textContent;
 
- // PAGE 1: cover + overall + core + first action
- let [c1,x1]=make(); header(x1,1,"まずここ読んで。あんたの会社、こんな会社。");
- try{
-   const im=new Image();im.src="./UMEKO_REPORT.PNG";await im.decode();
-   x1.drawImage(im,760,125,380,420);
- }catch(e){}
- x1.fillStyle="#332923";x1.font="900 54px sans-serif";x1.fillText(name+"株式会社",P,200);
- x1.fillStyle="#9b5f2f";x1.font="900 31px sans-serif";x1.fillText("商売の取扱説明書",P,252);
- x1.fillStyle="#fff4f7";x1.fillRect(P,310,650,245);
- x1.fillStyle="#332923";x1.font="900 28px sans-serif";x1.fillText("✨ 総合所見",P+22,355);
- let y1=drawText(x1,overall,P+22,405,606,"25px sans-serif",39);
- y1=Math.max(635,y1+30);
- y1=section(x1,"商売の核",coreT,y1,"🏪");
- x1.fillStyle="#332923";x1.fillRect(P,y1,W-P*2,190);
- x1.fillStyle="#fff";x1.font="900 28px sans-serif";x1.fillText("📌 まず最初の決裁",P+25,y1+45);
- drawText(x1,decision,P+25,y1+92,W-P*2-50,"700 25px sans-serif",40,"#fff");
- x1.fillStyle="#8b7a6e";x1.font="20px sans-serif";x1.fillText("全部いっぺんにやらんでええ。1ミリ動いたら今日は優勝。",P,H-55);
+ // PAGE 1
+ let [c1,x1]=make();header(x1,1,"まずここ読んで。あんたの会社、こんな会社。");
+ x1.fillStyle="#332923";x1.font="900 58px sans-serif";x1.fillText(name+"株式会社",P,215);
+ x1.fillStyle="#9b5f2f";x1.font="900 34px sans-serif";x1.fillText("商売の取扱説明書",P,270);
+ try{const im=await loadImageWithFallback("UMEKO_REPORT.PNG","TOP.PNG");x1.drawImage(im,805,145,330,365)}catch(e){}
+ let y1=345;
+ // Overall uses narrower box to coexist with character at top, then full-width sections.
+ x1.fillStyle="#fff4f7";x1.strokeStyle="#f1d9df";roundRect(x1,P,y1,690,360,24);x1.fill();x1.stroke();
+ x1.fillStyle="#9b5f2f";x1.font="900 32px sans-serif";x1.fillText("✨ 総合所見",P+25,y1+50);
+ let oy=y1+105;oy=draw(x1,overall,P+25,oy,640,"29px sans-serif",46);
+ y1=745;
+ y1=box(x1,"商売の核",coreT,y1,"🏪",{font:"29px sans-serif",lh:46,bg:"#fff"});
+ // Fill remaining bottom with decision block.
+ const dh=H-y1-70;
+ x1.fillStyle="#332923";roundRect(x1,P,y1,W-P*2,dh,24);x1.fill();
+ x1.fillStyle="#fff";x1.font="900 32px sans-serif";x1.fillText("📌 まず最初の決裁",P+26,y1+52);
+ draw(x1,decision,P+26,y1+110,W-P*2-52,"700 29px sans-serif",47,"#fff");
 
- // PAGE 2: customer/message/brand/action
- let [c2,x2]=make(); header(x2,2,"お客さんに届くまで。接客・言葉・見せ方・営業。");
- let y2=165;
- y2=section(x2,"お客さんとの関係",cust,y2,"🤝");
- y2=section(x2,"伝え方・発信",msg,y2,"📣");
- y2=section(x2,"世界観・見せ方",brand,y2,"🎨");
- y2=section(x2,"行動・営業",act,y2,"🔥");
- try{
-   const im=new Image();im.src="./UMEKO_REPORT.PNG";await im.decode();
-   x2.globalAlpha=.16;x2.drawImage(im,860,H-380,270,300);x2.globalAlpha=1;
- }catch(e){}
- x2.fillStyle="#8b7a6e";x2.font="20px sans-serif";x2.fillText("うまく売るより、あんたらしく伝わる形を作る。",P,H-55);
+ // PAGE 2
+ let [c2,x2]=make();header(x2,2,"お客さんに届くまで。接客・言葉・見せ方・営業。");
+ let y2=160;
+ y2=box(x2,"お客さんとの関係",cust,y2,"🤝",{font:"28px sans-serif",lh:44,bg:"#fffdf9"});
+ y2=box(x2,"伝え方・発信",msg,y2,"📣",{font:"28px sans-serif",lh:44,bg:"#fff"});
+ y2=box(x2,"世界観・見せ方",brand,y2,"🎨",{font:"28px sans-serif",lh:44,bg:"#fffdf9"});
+ y2=box(x2,"行動・営業",act,y2,"🔥",{font:"28px sans-serif",lh:44,bg:"#fff"});
+ // Footer character fills otherwise dead space.
+ try{const im=await loadImageWithFallback("UMEKO_REPORT.PNG","TOP.PNG");const sz=Math.min(230,Math.max(120,H-y2-55));x2.globalAlpha=.20;x2.drawImage(im,W-P-sz,H-sz-30,sz,sz);x2.globalAlpha=1}catch(e){}
+ x2.fillStyle="#8b7a6e";x2.font="700 22px sans-serif";x2.fillText("うまく売るより、あんたらしく伝わる形を作る。",P,H-45);
 
- // PAGE 3: growth/public/risk/policy/final
- let [c3,x3]=make(); header(x3,3,"ここから先。育てる・見せる・詰まりをほどく。");
- let y3=165;
- y3=section(x3,"育てる方向",growth,y3,"🌱");
- y3=section(x3,"社会に掲げる看板",pub,y3,"🏢");
- y3=section(x3,"商売で詰まりやすいところ",risk,y3,"⚠️");
- y3=section(x3,"これからの商売方針",policy,y3,"🧭");
- x3.fillStyle="#332923";x3.fillRect(P,y3,W-P*2,220);
- x3.fillStyle="#fff";x3.font="900 30px sans-serif";x3.fillText("🐱 うめこ最終決裁",P+25,y3+48);
- drawText(x3,decision,P+25,y3+100,W-P*2-50,"700 25px sans-serif",40,"#fff");
- x3.fillStyle="#9b5f2f";x3.font="900 25px sans-serif";x3.fillText("あんたの会社や。あんたが回せる商売にせぇ。",P,H-70);
-
- [["reportPage1",c1],["reportPage2",c2],["reportPage3",c3]].forEach(([id,c])=>{
-   const im=document.getElementById(id);im.src=c.toDataURL("image/png");im.style.display="block";
- });
+ // PAGE 3
+ let [c3,x3]=make();header(x3,3,"ここから先。育てる・見せる・詰まりをほどく。");
+ let y3=160;
+ y3=box(x3,"育てる方向",growth,y3,"🌱",{font:"28px sans-serif",lh:44,bg:"#fffdf9"});
+ y3=box(x3,"社会に掲げる看板",pub,y3,"🏢",{font:"28px sans-serif",lh:44,bg:"#fff"});
+ y3=box(x3,"商売で詰まりやすいところ",risk,y3,"⚠️",{font:"28px sans-serif",lh:44,bg:"#fffdf9"});
+ y3=box(x3,"これからの商売方針",policy,y3,"🧭",{font:"28px sans-serif",lh:44,bg:"#fff"});
+ const remaining=H-y3-55;
+ if(remaining>170){
+   x3.fillStyle="#332923";roundRect(x3,P,y3,W-P*2,remaining,24);x3.fill();
+   x3.fillStyle="#fff";x3.font="900 31px sans-serif";x3.fillText("🐱 うめこ最終決裁",P+26,y3+50);
+   draw(x3,decision,P+26,y3+105,W-P*2-52,"700 28px sans-serif",45,"#fff");
+ }
+ [["reportPage1",c1],["reportPage2",c2],["reportPage3",c3]].forEach(([id,c])=>{const im=document.getElementById(id);im.src=c.toDataURL("image/png");im.style.display="block"});
  document.getElementById("reportPage1").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function roundRect(ctx,x,y,w,h,r){
+ r=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();
 }
 function wrapCanvas(ctx,text,x,y,maxWidth,lineHeight){let line="";for(const ch of [...text]){const t=line+ch;if(ctx.measureText(t).width>maxWidth&&line){ctx.fillText(line,540,y);line=ch;y+=lineHeight}else line=t}if(line)ctx.fillText(line,540,y)}
 </script></body></html>
