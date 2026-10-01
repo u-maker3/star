@@ -11,6 +11,9 @@
 main{width:min(720px,100%);margin:auto;padding:16px 14px 80px}.hero,.card{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow)}.hero{text-align:center;padding:18px}.hero img{width:min(100%,430px);max-height:350px;object-fit:contain}.eyebrow{font-weight:900;color:#a4692b}.hero h1{font-size:clamp(30px,8vw,48px);line-height:1.05;margin:6px 0}.hero p,.small{color:var(--sub);line-height:1.65}.small{font-size:12px}.card{padding:18px;margin-top:14px}.card h2{margin:0 0 10px}label{display:block;font-weight:900;margin:14px 0 6px}.optional{font-size:11px;font-weight:500;color:var(--sub)}input,select{width:100%;font-size:16px;padding:13px;border:1px solid #d9cabe;border-radius:14px;background:#fff}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.notice{font-size:12px;line-height:1.6;padding:11px 12px;border-radius:14px;background:#fff5d9;margin-top:12px}.advanced{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px}summary{font-weight:900;cursor:pointer}button{border:0;border-radius:999px;padding:15px 18px;font-size:16px;font-weight:900;cursor:pointer}.primary{width:100%;margin-top:18px;color:#fff;background:linear-gradient(135deg,#ff6f91,#ef9c47);box-shadow:0 8px 22px rgba(239,111,145,.28)}.secondary{background:#fff;border:1px solid var(--line);color:var(--ink)}
 #result{display:none}.resultHero{text-align:center}.resultHero img{width:min(90%,330px);max-height:270px;object-fit:contain}.pill{display:inline-block;background:#fff0d5;color:#8c5b18;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:900}.type{font-size:27px;font-weight:1000;line-height:1.18;margin:8px 0}.astrogrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}.astro{padding:10px;border-radius:14px;background:#fff8ef;font-size:13px;font-weight:800}.dept{display:grid;grid-template-columns:82px 1fr;gap:12px;border-top:1px dashed var(--line);padding:14px 0}.dept:first-of-type{border-top:0}.dept img{width:82px;height:82px;object-fit:contain}.dept h3{margin:0 0 4px;font-size:17px}.dept p{margin:0 0 12px;line-height:1.72;font-size:14px}.dept p:last-child{margin-bottom:0}.dept b{color:#9b5f2f}.quote{background:#fff4f7;border-left:5px solid var(--pink);padding:14px;border-radius:14px;line-height:1.7}.order{background:#332923;color:#fff;padding:16px;border-radius:18px;font-weight:900;line-height:1.6}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.actions button{flex:1;min-width:130px}.error{display:none;margin-top:12px;padding:12px;border-radius:14px;background:#fff0f0;color:#9a3030;font-weight:700;line-height:1.55}.footer{text-align:center;color:#8c7d72;font-size:11px;line-height:1.65;margin-top:18px}
 @media(max-width:520px){.row{grid-template-columns:1fr}.dept{grid-template-columns:70px 1fr}.dept img{width:70px;height:70px}.astrogrid{grid-template-columns:1fr 1fr}}
+
+.reportBook h3{margin:22px 0 6px}.reportBook p{line-height:1.85}.licensePreview{width:100%;border-radius:18px;border:1px solid var(--line);margin-top:12px;-webkit-touch-callout:default}
+@media print{body{background:#fff}.hero,#formCard,.actions,.footer,.card:not(.reportBook){display:none!important}main{width:100%;padding:0}.reportBook{display:block!important;box-shadow:none;border:0;padding:15mm}.reportBook h3{page-break-after:avoid}.reportBook p{line-height:1.8}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
 </head>
@@ -53,7 +56,7 @@ main{width:min(720px,100%);margin:auto;padding:16px 14px 80px}.hero,.card{backgr
 <div class="pill" id="mode"></div>
 <div class="type" id="type"></div>
 <p id="summary"></p>
-<div class="astrogrid" id="astrogrid"></div>
+
 </div>
 <div class="card"><h2>📋 各部署から報告</h2><div id="departments"></div></div>
 <div class="card">
@@ -62,10 +65,24 @@ main{width:min(720px,100%);margin:auto;padding:16px 14px 80px}.hero,.card{backgr
 <h2>📌 本日の営業命令</h2><div class="order" id="order"></div>
 <h2>🐱 うめこ一言</h2><p id="umeko"></p>
 </div>
+<div class="card reportBook">
+<h2>📖 自分株式会社・商売鑑定書</h2>
+<div class="quote"><b>【総合所見】</b><br><span id="overall"></span></div>
+<h3>🏪 商売の核</h3><p id="reportCore"></p>
+<h3>🤝 お客さんとの関係</h3><p id="reportCustomer"></p>
+<h3>📣 伝え方・発信</h3><p id="reportMessage"></p>
+<h3>🎨 世界観・見せ方</h3><p id="reportBrand"></p>
+<h3>🔥 行動・営業</h3><p id="reportAction"></p>
+<h3>🌱 育てる方向</h3><p id="reportGrowth"></p>
+<h3>🏢 社会に掲げる看板</h3><p id="reportPublic"></p>
+<h3>⚠️ 商売で詰まりやすいところ</h3><p id="reportRisk"></p>
+<h3>🧭 これからの商売方針</h3><p id="reportPolicy"></p>
+<div class="order"><b>最終決裁</b><br><span id="finalDecision"></span></div>
+</div>
 <div class="card">
 <h2>🪪 商売・営業許可証</h2>
 <img src="./LICENSE.PNG" alt="営業許可証" style="width:100%;max-height:260px;object-fit:contain">
-<div class="actions"><button class="primary" id="save" style="margin-top:0">営業許可証を保存・共有</button><button class="secondary" id="retry">もう一回会議する</button></div>
+<p class="small">下の営業許可証を長押し →「写真に保存」でOK。</p><img id="licensePreview" class="licensePreview" alt="商売・営業許可証"><div class="actions"><button class="secondary" id="printReport">鑑定書を印刷／PDF保存</button><button class="secondary" id="retry">もう一回会議する</button></div>
 </div>
 </section>
 <div class="footer">占星術の象徴を使った娯楽・自己分析コンテンツです。売上・成功・適職を保証するものではありません。<br>
@@ -257,7 +274,7 @@ mc:{
 function richDepartmentHTML(d,s){
  const v=deptVoice[d.id];
  return `<img src="./${d.img}" alt=""><div>
- <h3>${d.label}｜${s}</h3>
+ <h3>${d.label}</h3>
  <p><b>【うちの部署の役目】</b><br>${v.role}</p>
  <p><b>【売る時の強み】</b><br>${v.strength(s)}</p>
  <p><b>【部長から注意】</b><br>${v.caution(s)}</p>
@@ -275,61 +292,47 @@ function buildMeeting(v){
 }
 const dontMap={"牡羊座":"完璧になるまで隠し続けること。","牡牛座":"安さだけで勝負して、自分の品質まで値切ること。","双子座":"ひとつの説明を完璧にするまで発信を止めること。","蟹座":"全員の面倒を抱えて、自分の店まで閉めること。","獅子座":"目立たんように全部を無難にすること。","乙女座":"直す場所を探し続けて、完成を永遠に延期すること。","天秤座":"全員に合わせすぎて、自分の看板を消すこと。","蠍座":"濃さを怖がって、誰にでも当たる薄味にすること。","射手座":"自由を求めすぎて、昨日始めた店を今日たたむこと🤣","山羊座":"実績が揃うまで『まだ名乗れません』を続けること。","水瓶座":"違うこと自体を目的にして、お客さんを置いていくこと。","魚座":"雰囲気だけで全部伝わると思って、申込方法まで溶かすこと。"};
 const orderMap={"牡羊座":"今日ひとつ、60点のまま表に出せ。","牡牛座":"いちばん自信ある商品を1個選んで、価値を3行で書け。","双子座":"今日知ったことを、短文ひとつで発信せぇ。","蟹座":"『誰に戻ってきてほしい店か』を1人だけ思い浮かべて書け。","獅子座":"いちばん見てほしいものを、遠慮せず主役に置け。","乙女座":"申込までの導線を1か所だけ直せ。全部直すな。","天秤座":"プロフィールかメニューの見た目を1か所整えろ。","蠍座":"『ここだけは誰より深く語れる』テーマを1個決めろ。","射手座":"今いちばん学びたい・試したいことを1個、予定に入れろ。","山羊座":"続けたい仕事を1個選んで、次の3回分だけ予定を決めろ。","水瓶座":"『普通こうする』を1個だけ疑って、自分式を試せ。","魚座":"頭の中のイメージを、写真・言葉・絵のどれか1つにせぇ。"};
+
+function fillLongReport(v,name){
+ const A=core[v.sun],B=core[v.moon],C=core[v.mercury],D=core[v.venus],E=core[v.mars],F=core[v.jupiter];
+ const put=(id,t)=>document.getElementById(id).textContent=t;
+ put("overall",`${name}株式会社は、「${A.k}」を商売の芯に、「${C.k}」で伝え、「${E.k}」で現実を動かす会社。全部を同じテンションで頑張るより、看板・接客・言葉・見せ方・営業・拡張を別部署として考えるほど持ち味が生きる。`);
+ put("reportCore",`前に出したい価値は「${A.v}」。商品数を増やすより、何を大切にして仕事する人なのかが伝わるほど看板が強くなる。${richSign[v.sun].strength}を商品やサービスの中心へ置くのが土台。`);
+ put("reportCustomer",`お客さんが戻ってくる鍵は「${B.v}」と感じられること。技術や価格だけでなく、やり取りの温度や店の空気まで商品になる。${richSign[v.moon].strength}を接客に使いつつ、${richSign[v.moon].caution}状態にならない線引きも必要。`);
+ put("reportMessage",`伝える時は「${C.tone}」が基本。情報量を増やすより、「この人の説明は分かる」と思われる言葉を育てる。投稿・プロフィール・メニュー説明・対面トークを同じ言葉遣いでつなぐと、商売の印象がまとまりやすい。`);
+ put("reportBrand",`見せ方は「${D.look}」が軸。写真、余白、文字、パッケージ、接客まで同じ空気にそろえると世界観になる。${richSign[v.venus].strength}が視覚に出るほど「あの人っぽい」が育つ。`);
+ put("reportAction",`営業では「${E.act}」が自然に動きやすい型。苦手な営業方法を根性で続けるより、自分のテンポへ募集・告知・新企画を合わせる。注意したいのは${richSign[v.mars].caution}こと。`);
+ put("reportGrowth",`育てる方向は「${F.grow}」。何でも増やすのではなく、すでに反応があるもの、続けても苦しくないもの、もっと深めたいものを選んで拡張する。「何屋として広げるか」を確認してから増築する。`);
+ put("reportPublic",v.mc?`社会へ掲げる看板は「${core[v.mc].social}」。初対面でも何を頼める人か分かる肩書きや一文を用意し、実際の仕事と外からの見え方をつなぐ。${richSign[v.mc].strength}を社会向けの役割として見せると伝わりやすい。`:`出生時刻・出生地が揃っていないため、ここは推測していません。分からないものを無理に埋めず、今回は6部署から読める商売の軸を優先します。`);
+ put("reportRisk",`注意したいのは「${richSign[v.sun].caution}」ことと、営業面で「${richSign[v.mars].caution}」状態になること。魅力がない時より、持ち味を使いすぎたり、逆に隠しすぎたりした時に詰まりやすい。`);
+ put("reportPolicy",`まず「${A.v}」を看板として明確にし、発信は「${C.tone}」、行動は「${E.act}」で統一する。そのうえで「${F.grow}」を半年単位で育てる。新しいことを足す前に、今ある仕事がこの方針につながっているか確認する。`);
+ put("finalDecision",`${orderMap[v.mars]}　全部いっぺんに直さんでええ。今日ひとつ決裁して、商売を一ミリ動かすこと。`);
+}
+async function buildLicensePreview(v,name,type){
+ const W=1080,H=1350,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");
+ x.fillStyle="#fff8ef";x.fillRect(0,0,W,H);x.textAlign="center";x.fillStyle="#332923";x.font="900 54px sans-serif";x.fillText("商売・営業許可証",W/2,85);
+ try{const im=new Image();im.src="./LICENSE.PNG";await im.decode();x.drawImage(im,330,125,420,370)}catch(e){}
+ x.font="900 40px sans-serif";x.fillText(name+"株式会社",W/2,555);x.font="800 29px sans-serif";wrapCanvas(x,type,100,620,880,42);
+ x.textAlign="left";x.font="700 26px sans-serif";let y=740;
+ [["看板","認定"],["接客","認定"],["伝え方","認定"],["店構え","認定"],["営業","認定"],["拡張","認定"]].forEach(r=>{x.fillStyle="#9b6b38";x.fillText(r[0],150,y);x.fillStyle="#332923";x.fillText(r[1],430,y);y+=52});
+ x.textAlign="center";x.font="900 28px sans-serif";x.fillText("本日の営業命令",W/2,y+30);x.font="700 24px sans-serif";wrapCanvas(x,orderMap[v.mars],100,y+75,880,38);
+ x.font="500 17px sans-serif";x.fillStyle="#8b7a6e";x.fillText("星から読む 自分株式会社の商売会議",W/2,1310);
+ document.getElementById("licensePreview").src=c.toDataURL("image/png");
+}
 function diagnose(){
  const chart=calculateChart();if(!chart)return;const {v,raw,exact}=chart,name=document.getElementById("name").value.trim()||"社長";
  document.getElementById("mode").textContent=v.mc?"7部署・MC込み":"6部署・MCなし";
  document.getElementById("type").textContent=name+"株式会社："+buildType(v);
  document.getElementById("summary").textContent=`看板は${core[v.sun].k}、伝え方は${core[v.mercury].k}、動き方は${core[v.mars].k}。星の部署ごとに役割を分けて会議したで。`;
- const ag=document.getElementById("astrogrid");ag.innerHTML="";
- const names={sun:"太陽",moon:"月",mercury:"水星",venus:"金星",mars:"火星",jupiter:"木星",mc:""};
- for(const k of ["sun","moon","mercury","venus","mars","jupiter","mc"]){if(!v[k])continue;const z=document.createElement("div");z.className="astro";z.textContent=`${glyph[k]}${names[k] ? " "+names[k] : ""}　${v[k]} ${degMinWithinSign(raw[k].lon)}`;ag.appendChild(z)}
  const wrap=document.getElementById("departments");wrap.innerHTML="";
  depts.forEach(d=>{if(!v[d.id])return;const el=document.createElement("div");el.className="dept";el.innerHTML=richDepartmentHTML(d,v[d.id]);wrap.appendChild(el)});
  document.getElementById("meeting").innerHTML=buildMeeting(v);document.getElementById("dont").textContent=dontMap[v.sun];document.getElementById("order").textContent=orderMap[v.mars];
  document.getElementById("umeko").textContent=v.mc?"会議7人おんのに社長あんた一人や。はよ決裁せぇ🤣":"MCは推測してへん。分かる6部署だけで営業開始や🤣";
+ fillLongReport(v,name);buildLicensePreview(v,name,buildType(v));
  document.getElementById("formCard").style.display="none";document.getElementById("result").style.display="block";window.__last={v,name,type:buildType(v)};window.scrollTo({top:0,behavior:"smooth"});
 }
 document.getElementById("diagnose").addEventListener("click",diagnose);
 document.getElementById("retry").addEventListener("click",()=>{document.getElementById("result").style.display="none";document.getElementById("formCard").style.display="block";window.scrollTo({top:0,behavior:"smooth"})});
-document.getElementById("save").addEventListener("click",async()=>{
- const q=window.__last;if(!q)return;
- const {v,name,type}=q,W=1080,H=1350,c=document.createElement("canvas");
- c.width=W;c.height=H;const x=c.getContext("2d");
- x.fillStyle="#fff8ef";x.fillRect(0,0,W,H);
- x.textAlign="center";x.fillStyle="#332923";x.font="900 54px sans-serif";
- x.fillText("商売・営業許可証",W/2,85);
- try{const im=new Image();im.src="./LICENSE.PNG";await im.decode();x.drawImage(im,330,125,420,370)}catch(e){}
- x.font="900 40px sans-serif";x.fillText(name+"株式会社",W/2,555);
- x.font="800 29px sans-serif";wrapCanvas(x,type,100,620,880,42);
- x.textAlign="left";x.font="700 26px sans-serif";let y=740;
- const rows=[["太陽",v.sun],["月",v.moon],["水星",v.mercury],["金星",v.venus],["火星",v.mars],["木星",v.jupiter]];
- if(v.mc)rows.push(["MC",v.mc]);
- rows.forEach(r=>{x.fillStyle="#9b6b38";x.fillText(r[0],150,y);x.fillStyle="#332923";x.fillText(r[1],350,y);y+=52});
- x.textAlign="center";x.font="900 28px sans-serif";x.fillText("本日の営業命令",W/2,y+30);
- x.font="700 24px sans-serif";wrapCanvas(x,orderMap[v.mars],100,y+75,880,38);
- x.font="500 17px sans-serif";x.fillStyle="#8b7a6e";
- x.fillText("占星術の象徴を使った娯楽・自己分析コンテンツです",W/2,1310);
-
- const blob=await new Promise(resolve=>c.toBlob(resolve,"image/png"));
- if(!blob){alert("画像を作れへんかった😭 もう一回試してな。");return;}
- const file=new File([blob],"UMEKO_BUSINESS_LICENSE.PNG",{type:"image/png"});
-
- // iPhone/Safariは共有シートを優先。「画像を保存」を選べます。
- if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
-   try{
-     await navigator.share({files:[file],title:"商売・営業許可証"});
-     return;
-   }catch(e){if(e && e.name==="AbortError")return;}
- }
-
- // 共有非対応時はPNGを新しい画面で開く。
- const url=URL.createObjectURL(blob);
- const win=window.open(url,"_blank");
- if(!win){
-   const a=document.createElement("a");a.href=url;a.download="UMEKO_BUSINESS_LICENSE.PNG";
-   document.body.appendChild(a);a.click();a.remove();
- }
- setTimeout(()=>URL.revokeObjectURL(url),60000);
-});
+document.getElementById("printReport").addEventListener("click",()=>window.print());
 function wrapCanvas(ctx,text,x,y,maxWidth,lineHeight){let line="";for(const ch of [...text]){const t=line+ch;if(ctx.measureText(t).width>maxWidth&&line){ctx.fillText(line,540,y);line=ch;y+=lineHeight}else line=t}if(line)ctx.fillText(line,540,y)}
 </script></body></html>
