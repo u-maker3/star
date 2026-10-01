@@ -65,7 +65,7 @@ main{width:min(720px,100%);margin:auto;padding:16px 14px 80px}.hero,.card{backgr
 <div class="card">
 <h2>🪪 商売・営業許可証</h2>
 <img src="./LICENSE.PNG" alt="営業許可証" style="width:100%;max-height:260px;object-fit:contain">
-<div class="actions"><button class="primary" id="save" style="margin-top:0">営業許可証を画像保存</button><button class="secondary" id="retry">もう一回会議する</button></div>
+<div class="actions"><button class="primary" id="save" style="margin-top:0">営業許可証を保存・共有</button><button class="secondary" id="retry">もう一回会議する</button></div>
 </div>
 </section>
 <div class="footer">占星術の象徴を使った娯楽・自己分析コンテンツです。売上・成功・適職を保証するものではありません。<br>
@@ -223,12 +223,44 @@ function diagnose(){
 document.getElementById("diagnose").addEventListener("click",diagnose);
 document.getElementById("retry").addEventListener("click",()=>{document.getElementById("result").style.display="none";document.getElementById("formCard").style.display="block";window.scrollTo({top:0,behavior:"smooth"})});
 document.getElementById("save").addEventListener("click",async()=>{
- const q=window.__last;if(!q)return;const {v,name,type}=q,W=1080,H=1350,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");x.fillStyle="#fff8ef";x.fillRect(0,0,W,H);x.textAlign="center";x.fillStyle="#332923";x.font="900 54px sans-serif";x.fillText("商売・営業許可証",W/2,85);
+ const q=window.__last;if(!q)return;
+ const {v,name,type}=q,W=1080,H=1350,c=document.createElement("canvas");
+ c.width=W;c.height=H;const x=c.getContext("2d");
+ x.fillStyle="#fff8ef";x.fillRect(0,0,W,H);
+ x.textAlign="center";x.fillStyle="#332923";x.font="900 54px sans-serif";
+ x.fillText("商売・営業許可証",W/2,85);
  try{const im=new Image();im.src="./LICENSE.PNG";await im.decode();x.drawImage(im,330,125,420,370)}catch(e){}
- x.font="900 40px sans-serif";x.fillText(name+"株式会社",W/2,555);x.font="800 29px sans-serif";wrapCanvas(x,type,100,620,880,42);x.textAlign="left";x.font="700 26px sans-serif";let y=740;
- const rows=[["太陽",v.sun],["月",v.moon],["水星",v.mercury],["金星",v.venus],["火星",v.mars],["木星",v.jupiter]];if(v.mc)rows.push(["MC",v.mc]);rows.forEach(r=>{x.fillStyle="#9b6b38";x.fillText(r[0],150,y);x.fillStyle="#332923";x.fillText(r[1],350,y);y+=52});
- x.textAlign="center";x.font="900 28px sans-serif";x.fillText("本日の営業命令",W/2,y+30);x.font="700 24px sans-serif";wrapCanvas(x,orderMap[v.mars],100,y+75,880,38);x.font="500 17px sans-serif";x.fillStyle="#8b7a6e";x.fillText("占星術の象徴を使った娯楽・自己分析コンテンツです",W/2,1310);
- const a=document.createElement("a");a.download="UMEKO_BUSINESS_LICENSE.PNG";a.href=c.toDataURL("image/png");a.click();
+ x.font="900 40px sans-serif";x.fillText(name+"株式会社",W/2,555);
+ x.font="800 29px sans-serif";wrapCanvas(x,type,100,620,880,42);
+ x.textAlign="left";x.font="700 26px sans-serif";let y=740;
+ const rows=[["太陽",v.sun],["月",v.moon],["水星",v.mercury],["金星",v.venus],["火星",v.mars],["木星",v.jupiter]];
+ if(v.mc)rows.push(["MC",v.mc]);
+ rows.forEach(r=>{x.fillStyle="#9b6b38";x.fillText(r[0],150,y);x.fillStyle="#332923";x.fillText(r[1],350,y);y+=52});
+ x.textAlign="center";x.font="900 28px sans-serif";x.fillText("本日の営業命令",W/2,y+30);
+ x.font="700 24px sans-serif";wrapCanvas(x,orderMap[v.mars],100,y+75,880,38);
+ x.font="500 17px sans-serif";x.fillStyle="#8b7a6e";
+ x.fillText("占星術の象徴を使った娯楽・自己分析コンテンツです",W/2,1310);
+
+ const blob=await new Promise(resolve=>c.toBlob(resolve,"image/png"));
+ if(!blob){alert("画像を作れへんかった😭 もう一回試してな。");return;}
+ const file=new File([blob],"UMEKO_BUSINESS_LICENSE.PNG",{type:"image/png"});
+
+ // iPhone/Safariは共有シートを優先。「画像を保存」を選べます。
+ if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
+   try{
+     await navigator.share({files:[file],title:"商売・営業許可証"});
+     return;
+   }catch(e){if(e && e.name==="AbortError")return;}
+ }
+
+ // 共有非対応時はPNGを新しい画面で開く。
+ const url=URL.createObjectURL(blob);
+ const win=window.open(url,"_blank");
+ if(!win){
+   const a=document.createElement("a");a.href=url;a.download="UMEKO_BUSINESS_LICENSE.PNG";
+   document.body.appendChild(a);a.click();a.remove();
+ }
+ setTimeout(()=>URL.revokeObjectURL(url),60000);
 });
 function wrapCanvas(ctx,text,x,y,maxWidth,lineHeight){let line="";for(const ch of [...text]){const t=line+ch;if(ctx.measureText(t).width>maxWidth&&line){ctx.fillText(line,540,y);line=ch;y+=lineHeight}else line=t}if(line)ctx.fillText(line,540,y)}
 </script></body></html>
